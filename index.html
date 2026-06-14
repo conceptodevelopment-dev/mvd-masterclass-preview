@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Masterclass Gratuita — MVD Trading Academy</title>
-<meta name="description" content="2 horas en vivo con Esteban Echevarría. Aprendé a operar los mercados con método, no con suerte. Sin humo, sin señales, sin venta de promesas.">
+<meta name="description" content="Masterclass gratuita y en vivo con Esteban Echevarría. Dos horas de trading real: herramientas, números reales y tus preguntas respondidas. Sin humo ni promesas vacías.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -328,7 +328,7 @@ footer .flinks a:hover{color:var(--ink)}
   .hero-top,.hero-bot{display:block}
   .hero-bot{margin-top:auto}                                  /* CTA abajo del todo */
   .hero-content{text-align:center}
-  #heroCanvas,#heridaCanvas{transform-origin:70% 63%}        /* el zoom bucea en el punto/precio (que ahora está al 70%, con gráfica a su derecha) */
+  #heroCanvas,#heridaCanvas{transform-origin:86% 57%}        /* el zoom bucea en el punto/precio (cerca del final, visible; con gráfica a su derecha) */
   #heridaCanvas{transition:none}                             /* el blur lo maneja el dive por scroll (sin lag) */
   .hero-grad{background:linear-gradient(to bottom,
     rgba(5,8,12,.97) 0%,rgba(5,8,12,.95) 38%,rgba(5,8,12,.55) 46%,rgba(5,8,12,.08) 57%,
@@ -410,11 +410,11 @@ footer .flinks a:hover{color:var(--ink)}
     <div class="inner">
       <div class="hero-top">
         <div class="hero-eyebrow eyebrow">Masterclass gratuita · En vivo · Una vez al mes</div>
-        <h1>Aprendé a leer el mercado <em>en una noche.</em></h1>
-        <p class="hero-sub-mob"><b>2 horas en vivo</b> con Esteban Echevarría. Trading real, sin humo ni señales.</p>
+        <h1>Una noche de trading real con <em>Esteban Echevarría.</em></h1>
+        <p class="hero-sub-mob">Masterclass <b>gratis y en vivo</b>. Trading de verdad, sin humo, y todas tus preguntas respondidas.</p>
       </div>
       <div class="hero-bot">
-        <p class="hero-sub">2 horas en vivo con <b>Esteban Echevarría</b> — de chef a trader full-time. Vas a ver, en tiempo real, cómo opera alguien que vive de esto. <b>Sin humo, sin señales, sin venta de promesas.</b></p>
+        <p class="hero-sub">Una masterclass <b>gratuita y en vivo</b>. Dos horas para ver cómo opera alguien que vive de esto, llevarte herramientas reales y preguntarle lo que quieras a <b>Esteban Echevarría</b>. Sin humo y sin promesas vacías.</p>
         <div class="hero-actions">
           <a href="#registro" class="cta lg">Reservar mi lugar gratis
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z"/></svg>
@@ -458,11 +458,11 @@ footer .flinks a:hover{color:var(--ink)}
       <div class="label-row"><span class="lbl">La masterclass · 2 horas en vivo</span><div class="lline"></div></div>
       <h2 class="t2-h">Esto es lo que te <em>llevás.</em></h2>
       <ul class="t2-list">
-        <li><span class="n">01</span> Cómo leer un gráfico sin señales ni humo</li>
-        <li><span class="n">02</span> La gestión de riesgo que separa a los que duran</li>
-        <li><span class="n">03</span> Cómo operar con poco capital sin volar la cuenta</li>
-        <li><span class="n">04</span> Un setup completo, en vivo, de principio a fin</li>
-        <li><span class="n">05</span> Cómo se piensa una operación: del análisis a la salida</li>
+        <li><span class="n">01</span> Cómo opera alguien que vive del trading</li>
+        <li><span class="n">02</span> Herramientas y conceptos que te llevás puestos</li>
+        <li><span class="n">03</span> Cuánto se gana de verdad, con números reales</li>
+        <li><span class="n">04</span> Tus preguntas, las que sean, respondidas en vivo</li>
+        <li><span class="n">05</span> Dos horas con Esteban, sin humo ni vueltas</li>
       </ul>
       <a href="#registro" class="cta lg">Reservar mi lugar gratis
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z"/></svg>
@@ -681,8 +681,8 @@ function Chart(canvas, opts){
 
 /* instanciar: hero vivo en desktop (respira + precio tick); ESTÁTICO en mobile (dive butter). herida siempre estático = es fondo */
 const isMob=matchMedia('(max-width:760px)').matches;
-Chart(document.getElementById('heroCanvas'), {trend:1, live:true, label:true, bright:'right', amp:0.30, ampM:0.24, mid:0.55, midM:0.72, base:18000, leaderFrac:isMob?0.7:1});
-Chart(document.getElementById('heridaCanvas'), {trend:1, live:false, label:false, bright:'right', amp:0.30, ampM:0.24, mid:0.55, midM:0.72, base:18000, leaderFrac:isMob?0.7:1});
+Chart(document.getElementById('heroCanvas'), {trend:1, live:true, label:true, bright:'right', amp:0.30, ampM:0.24, mid:0.55, midM:0.72, base:18000, leaderFrac:isMob?0.86:1});
+Chart(document.getElementById('heridaCanvas'), {trend:1, live:false, label:false, bright:'right', amp:0.30, ampM:0.24, mid:0.55, midM:0.72, base:18000, leaderFrac:isMob?0.86:1});
 
 /* ═══ DIVE: transición wow hero→sección2 — scroll-based, SOLO CSS transforms (butter, 1:1, sin inercia) ═══ */
 (function(){
@@ -716,8 +716,8 @@ Chart(document.getElementById('heridaCanvas'), {trend:1, live:false, label:false
     if(mob){
       /* MOBILE: el zoom bucea en el punto/precio (derecha) y lo lleva al CENTRO; ese punto+número
          es lo último nítido y después TODO se va a blur (entrada a la sección 2). */
-      const tdp=ease(clamp(p/0.6,0,1));
-      const tx=-0.20*innerWidth*tdp, ty=-0.13*innerHeight*tdp;   // lleva el punto (70%,63%) al centro (50%,50%)
+      const tdp=ease(clamp((p-0.25)/0.5,0,1));   // translate retrasado (cuando el zoom ya es alto) → nunca deja franja vacía
+      const tx=-0.22*innerWidth*tdp, ty=-0.07*innerHeight*tdp;   // acerca el punto (86%,57%) hacia el centro sin descubrir el borde
       const blur=7*clamp((p-0.6)/0.3,0,1);
       const tf=`translate(${tx}px,${ty}px) scale(${zoom})`;
       hCanvas.style.transform=tf; sCanvas.style.transform=tf;
