@@ -328,7 +328,7 @@ footer .flinks a:hover{color:var(--ink)}
   .hero-top,.hero-bot{display:block}
   .hero-bot{margin-top:auto}                                  /* CTA abajo del todo */
   .hero-content{text-align:center}
-  #heroCanvas,#heridaCanvas{transform-origin:90% 47%}        /* el zoom bucea en el punto/precio (derecha) */
+  #heroCanvas,#heridaCanvas{transform-origin:70% 63%}        /* el zoom bucea en el punto/precio (que ahora está al 70%, con gráfica a su derecha) */
   #heridaCanvas{transition:none}                             /* el blur lo maneja el dive por scroll (sin lag) */
   .hero-grad{background:linear-gradient(to bottom,
     rgba(5,8,12,.97) 0%,rgba(5,8,12,.95) 38%,rgba(5,8,12,.55) 46%,rgba(5,8,12,.08) 57%,
@@ -351,7 +351,7 @@ footer .flinks a:hover{color:var(--ink)}
     radial-gradient(130% 60% at 50% 46%,rgba(5,8,12,.82),rgba(5,8,12,.4) 66%,transparent 100%),
     linear-gradient(to bottom,rgba(5,8,12,.7),rgba(5,8,12,.1) 26%,rgba(5,8,12,.1) 74%,rgba(5,8,12,.7))}
   #herida.arrived #heridaCanvas{filter:blur(3px) brightness(.95) saturate(1.1)}  /* gráfico SÍ visible */
-  .t2-wrap{max-width:none;margin:0;width:100%;display:flex;flex-direction:column;min-height:100svh;padding:116px 0 34px;text-align:center}
+  .t2-wrap{max-width:none;margin:0;width:100%;display:flex;flex-direction:column;min-height:100svh;padding:108px 0 18px;text-align:center}
   #herida .label-row{justify-content:center;margin-bottom:0}
   #herida .label-row .lline{display:none}
   .t2-h{font-size:clamp(2rem,8vw,2.6rem);margin:14px 0 0}
@@ -360,9 +360,12 @@ footer .flinks a:hover{color:var(--ink)}
   #herida .cta{justify-content:center;width:100%}
 
   /* ── INSTRUCTOR: foto primero ── */
-  .instr-grid{display:flex;flex-direction:column;gap:30px}
+  .instr-grid{display:flex;flex-direction:column;gap:26px;text-align:center}
   .instr-photo{order:-1;max-width:none;width:100%;aspect-ratio:16/11}
-  .instr-quote{font-size:1.1rem}
+  #instructor .label-row{justify-content:center}
+  #instructor .label-row .lline{display:none}
+  .instr-quote{font-size:1.12rem;border-left:none;padding:0;margin:0 auto 26px;max-width:34ch}
+  .cred-row{justify-content:center}
 
   /* ── REGISTRO: centrado ── */
   .reg-left{text-align:center}
@@ -479,7 +482,6 @@ footer .flinks a:hover{color:var(--ink)}
         <div class="label-row"><span class="lbl">Tu instructor</span><div class="lline"></div></div>
         <h2 class="instr-name">Esteban Echevarría</h2>
         <p class="instr-role">Fundador · MVD Trading · Trader full-time desde 2012</p>
-        <p class="instr-bio">Empezó en una cocina, no en Wall Street. <b>De chef a trader</b>, se formó a fuerza de años de prueba, error y miles de horas frente al gráfico — incluyendo estudios en <b>Harvard</b>. Hoy opera todos los días y enseña exactamente lo que hace: price action real, gestión de riesgo institucional y psicología operativa. <b>Sin atajos. Sin promesas vacías.</b></p>
         <blockquote class="instr-quote">"El trading no es suerte. Es método, gestión y disciplina. Y eso sí se puede enseñar."</blockquote>
         <div class="cred-row">
           <span class="cred"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6 4.5 2.3 7.1L12 16.6 5.7 21l2.3-7.1-6-4.5h7.6z"/></svg> Emprendedor del Año 2023</span>
@@ -617,8 +619,9 @@ function Chart(canvas, opts){
     const midY=H*(mob?(opts.midM??opts.mid??0.55):(opts.mid??0.52));
     const Y=v=>midY - v*amp;
     const n=closes.length;
+    const li=Math.max(1,Math.min(n-1,Math.round((n-1)*(opts.leaderFrac??1))));   // punto/precio: puede NO ser el final → la línea sigue a su derecha (sin franja vacía)
     const cU=opts.up||'39,211,232', cD=opts.down||'232,116,106', cL=opts.line||cU;
-    const pts=[]; for(let i=0;i<n;i++) pts.push([(i/(n-1))*W, Y(i===n-1?closes[i]+live:closes[i])]);
+    const pts=[]; for(let i=0;i<n;i++) pts.push([(i/(n-1))*W, Y(i===li?closes[i]+live:closes[i])]);
 
     /* área (gradiente sutil) */
     const grd=x.createLinearGradient(0,Math.min(...pts.map(p=>p[1])),0,H);
@@ -629,7 +632,7 @@ function Chart(canvas, opts){
     /* velas — fantasma de un lado, brillantes del otro */
     const bw=Math.max(4,STEP*0.5);let lx=0,ly=0;
     for(let i=1;i<n;i++){
-      const u=i/(n-1),cx=u*W,o=closes[i-1],c=(i===n-1?closes[i]+live:closes[i]),up=c>=o;
+      const u=i/(n-1),cx=u*W,o=closes[i-1],c=(i===li?closes[i]+live:closes[i]),up=c>=o;
       const ramp=opts.bright==='left'?lerp(0.9,0.08,u):lerp(0.06,0.9,u);
       const yO=Y(o),yC=Y(c),top=Math.min(yO,yC),bh=Math.max(2,Math.abs(yC-yO)),wick=4+hash(i)*7;
       x.strokeStyle=up?`rgba(${cU},${ramp})`:`rgba(${cD},${ramp})`;
@@ -645,13 +648,14 @@ function Chart(canvas, opts){
     const lg=x.createLinearGradient(0,0,W,0);
     lg.addColorStop(0,`rgba(${cL},0.10)`);lg.addColorStop(0.55,`rgba(${cL},0.55)`);lg.addColorStop(1,`rgba(${cL},0.95)`);
     path();x.lineWidth=2.2;x.strokeStyle=lg;x.stroke();
-    /* punto líder (glow con radial-gradient, barato) + etiqueta de precio (desktop) */
+    /* punto líder (glow + etiqueta) en la posición li */
+    lx=(li/(n-1))*W; ly=pts[li][1];
     if(lx){
       const rg=x.createRadialGradient(lx,ly,0,lx,ly,15);rg.addColorStop(0,`rgba(130,234,246,0.85)`);rg.addColorStop(1,`rgba(${cL},0)`);
       x.fillStyle=rg;x.beginPath();x.arc(lx,ly,15,0,7);x.fill();
       x.fillStyle='rgba(190,247,253,1)';x.beginPath();x.arc(lx,ly,3.4,0,7);x.fill();
       if(opts.label){
-        const price=(opts.base||18000)+(closes[n-1]+live)*2400;
+        const price=(opts.base||18000)+(closes[li]+live)*2400;
         const label='▲ '+price.toLocaleString('en-US',{minimumFractionDigits:1,maximumFractionDigits:1});
         x.font='600 13px "JetBrains Mono",monospace';const tw=x.measureText(label).width+22;
         let bx=lx+14;if(bx+tw>W-8)bx=lx-tw-14;bx=Math.max(8,bx);const by=ly-13;
@@ -676,8 +680,9 @@ function Chart(canvas, opts){
 }
 
 /* instanciar: hero vivo en desktop (respira + precio tick); ESTÁTICO en mobile (dive butter). herida siempre estático = es fondo */
-Chart(document.getElementById('heroCanvas'), {trend:1, live:true, label:true, bright:'right', amp:0.30, ampM:0.24, mid:0.55, midM:0.74, base:18000});
-Chart(document.getElementById('heridaCanvas'), {trend:1, live:false, label:false, bright:'right', amp:0.30, ampM:0.24, mid:0.55, midM:0.74, base:18000});
+const isMob=matchMedia('(max-width:760px)').matches;
+Chart(document.getElementById('heroCanvas'), {trend:1, live:true, label:true, bright:'right', amp:0.30, ampM:0.24, mid:0.55, midM:0.72, base:18000, leaderFrac:isMob?0.7:1});
+Chart(document.getElementById('heridaCanvas'), {trend:1, live:false, label:false, bright:'right', amp:0.30, ampM:0.24, mid:0.55, midM:0.72, base:18000, leaderFrac:isMob?0.7:1});
 
 /* ═══ DIVE: transición wow hero→sección2 — scroll-based, SOLO CSS transforms (butter, 1:1, sin inercia) ═══ */
 (function(){
@@ -696,7 +701,7 @@ Chart(document.getElementById('heridaCanvas'), {trend:1, live:false, label:false
   function sizeFrame(){
     if(!frame) return; const w=frame.clientWidth, h=frame.clientHeight; if(!w||!h) return;
     const mob=w<760;
-    const sx=mob?12:20, top=mob?88:20, bot=mob?26:20, rx=mob?18:24;   // mobile: techo bajo el header, piso cerca del fondo
+    const sx=mob?12:20, top=mob?86:20, bot=mob?16:20, rx=mob?18:24;   // mobile: techo bajo el header, piso bien abajo
     frame.querySelectorAll('rect').forEach(r=>{
       r.setAttribute('x',sx); r.setAttribute('y',top);
       r.setAttribute('width',Math.max(0,w-sx*2)); r.setAttribute('height',Math.max(0,h-top-bot));
@@ -712,9 +717,9 @@ Chart(document.getElementById('heridaCanvas'), {trend:1, live:false, label:false
       /* MOBILE: el zoom bucea en el punto/precio (derecha) y lo lleva al CENTRO; ese punto+número
          es lo último nítido y después TODO se va a blur (entrada a la sección 2). */
       const tdp=ease(clamp(p/0.6,0,1));
-      const tx=-0.40*innerWidth*tdp;
+      const tx=-0.20*innerWidth*tdp, ty=-0.13*innerHeight*tdp;   // lleva el punto (70%,63%) al centro (50%,50%)
       const blur=7*clamp((p-0.6)/0.3,0,1);
-      const tf=`translate(${tx}px,0) scale(${zoom})`;
+      const tf=`translate(${tx}px,${ty}px) scale(${zoom})`;
       hCanvas.style.transform=tf; sCanvas.style.transform=tf;
       const fl=blur>0.05?`blur(${blur.toFixed(2)}px)`:'';
       hCanvas.style.filter=fl; sCanvas.style.filter=fl;
