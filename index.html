@@ -88,7 +88,7 @@ img,canvas{display:block;max-width:100%}
 .hero-top,.hero-bot{display:contents}  /* desktop: neutro. mobile: bloques arriba/abajo (gráfica en el medio) */
 .hero-eyebrow{margin-bottom:24px}
 #hero h1{font-weight:340;font-size:clamp(3rem,6.6vw,5.8rem);line-height:.95;letter-spacing:-.025em;max-width:15ch;margin-bottom:24px}
-#hero h1 em{font-style:italic;color:var(--cyan);font-weight:380}
+#hero h1 em{font-family:'Inter',sans-serif;font-style:normal;color:var(--cyan);font-weight:600;letter-spacing:-.02em;font-size:.82em}  /* "Esteban Echevarría" en tipografía más clara (sans) */
 .hero-sub{font-size:clamp(1rem,1.35vw,1.18rem);color:rgba(233,242,246,.7);font-weight:300;max-width:48ch;line-height:1.6;margin-bottom:36px}
 .hero-sub b{color:var(--ink);font-weight:500}
 .hero-sub-mob{display:none}
@@ -328,7 +328,7 @@ footer .flinks a:hover{color:var(--ink)}
   .hero-top,.hero-bot{display:block}
   .hero-bot{margin-top:auto}                                  /* CTA abajo del todo */
   .hero-content{text-align:center}
-  #heroCanvas,#heridaCanvas{transform-origin:87% 55%}        /* el zoom bucea en el punto/precio (cerca del final, visible) */
+  #heroCanvas,#heridaCanvas{transform-origin:96% 51%}        /* el zoom bucea en el punto/precio (última vela) */
   #heridaCanvas{transition:none}                             /* el blur lo maneja el dive por scroll (sin lag) */
   .hero-grad{background:linear-gradient(to bottom,
     rgba(5,8,12,.97) 0%,rgba(5,8,12,.95) 38%,rgba(5,8,12,.55) 46%,rgba(5,8,12,.08) 57%,
@@ -351,7 +351,7 @@ footer .flinks a:hover{color:var(--ink)}
     radial-gradient(130% 60% at 50% 46%,rgba(5,8,12,.82),rgba(5,8,12,.4) 66%,transparent 100%),
     linear-gradient(to bottom,rgba(5,8,12,.7),rgba(5,8,12,.1) 26%,rgba(5,8,12,.1) 74%,rgba(5,8,12,.7))}
   #herida.arrived #heridaCanvas{filter:blur(3px) brightness(.95) saturate(1.1)}  /* gráfico SÍ visible */
-  .t2-wrap{max-width:none;margin:0;width:100%;display:flex;flex-direction:column;min-height:100svh;padding:104px 0 6px;text-align:center}
+  .t2-wrap{max-width:none;margin:0;width:100%;display:flex;flex-direction:column;min-height:100svh;padding:104px 0 32px;text-align:center}
   #herida .label-row{justify-content:center;margin-bottom:0}
   #herida .label-row .lline{display:none}
   .t2-h{font-size:clamp(2rem,8vw,2.6rem);margin:14px 0 0}
@@ -674,8 +674,8 @@ function Chart(canvas, opts){
 
 /* instanciar: hero vivo en desktop (respira + precio tick); ESTÁTICO en mobile (dive butter). herida siempre estático = es fondo */
 const isMob=matchMedia('(max-width:760px)').matches;
-Chart(document.getElementById('heroCanvas'), {trend:1, live:true, label:true, bright:'right', amp:0.30, ampM:0.24, mid:0.55, midM:0.72, base:18000, leaderFrac:isMob?0.9:1});
-Chart(document.getElementById('heridaCanvas'), {trend:1, live:false, label:false, bright:'right', amp:0.30, ampM:0.24, mid:0.55, midM:0.72, base:18000, leaderFrac:isMob?0.9:1});
+Chart(document.getElementById('heroCanvas'), {trend:1, live:true, label:true, bright:'right', amp:0.30, ampM:0.24, mid:0.55, midM:0.72, base:18000, leaderFrac:1});
+Chart(document.getElementById('heridaCanvas'), {trend:1, live:false, label:false, bright:'right', amp:0.30, ampM:0.24, mid:0.55, midM:0.72, base:18000, leaderFrac:1});
 
 /* ═══ DIVE: transición wow hero→sección2 — scroll-based, SOLO CSS transforms (butter, 1:1, sin inercia) ═══ */
 (function(){
@@ -694,7 +694,7 @@ Chart(document.getElementById('heridaCanvas'), {trend:1, live:false, label:false
   function sizeFrame(){
     if(!frame) return; const w=frame.clientWidth, h=frame.clientHeight; if(!w||!h) return;
     const mob=w<760;
-    const sx=mob?12:20, top=mob?86:20, bot=mob?9:20, rx=mob?18:24;   // mobile: techo bajo el header, piso bien abajo
+    const sx=mob?12:20, top=mob?84:20, bot=mob?14:20, rx=mob?18:24;   // mobile: techo bajo el header, piso abajo con aire para el CTA
     frame.querySelectorAll('rect').forEach(r=>{
       r.setAttribute('x',sx); r.setAttribute('y',top);
       r.setAttribute('width',Math.max(0,w-sx*2)); r.setAttribute('height',Math.max(0,h-top-bot));
