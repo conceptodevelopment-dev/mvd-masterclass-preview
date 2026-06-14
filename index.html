@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Masterclass Gratuita — MVD Trading Academy</title>
-<meta name="description" content="Masterclass gratuita y en vivo con Esteban Echevarría. Dos horas de trading real: herramientas, números reales y tus preguntas respondidas. Sin humo ni promesas vacías.">
+<meta name="description" content="Masterclass gratuita y en vivo con Esteban Echevarría. Dos horas de trading real: herramientas, números reales y tus preguntas respondidas con un trader que vive de esto.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -328,7 +328,7 @@ footer .flinks a:hover{color:var(--ink)}
   .hero-top,.hero-bot{display:block}
   .hero-bot{margin-top:auto}                                  /* CTA abajo del todo */
   .hero-content{text-align:center}
-  #heroCanvas,#heridaCanvas{transform-origin:86% 57%}        /* el zoom bucea en el punto/precio (cerca del final, visible; con gráfica a su derecha) */
+  #heroCanvas,#heridaCanvas{transform-origin:87% 55%}        /* el zoom bucea en el punto/precio (cerca del final, visible) */
   #heridaCanvas{transition:none}                             /* el blur lo maneja el dive por scroll (sin lag) */
   .hero-grad{background:linear-gradient(to bottom,
     rgba(5,8,12,.97) 0%,rgba(5,8,12,.95) 38%,rgba(5,8,12,.55) 46%,rgba(5,8,12,.08) 57%,
@@ -351,7 +351,7 @@ footer .flinks a:hover{color:var(--ink)}
     radial-gradient(130% 60% at 50% 46%,rgba(5,8,12,.82),rgba(5,8,12,.4) 66%,transparent 100%),
     linear-gradient(to bottom,rgba(5,8,12,.7),rgba(5,8,12,.1) 26%,rgba(5,8,12,.1) 74%,rgba(5,8,12,.7))}
   #herida.arrived #heridaCanvas{filter:blur(3px) brightness(.95) saturate(1.1)}  /* gráfico SÍ visible */
-  .t2-wrap{max-width:none;margin:0;width:100%;display:flex;flex-direction:column;min-height:100svh;padding:108px 0 18px;text-align:center}
+  .t2-wrap{max-width:none;margin:0;width:100%;display:flex;flex-direction:column;min-height:100svh;padding:104px 0 6px;text-align:center}
   #herida .label-row{justify-content:center;margin-bottom:0}
   #herida .label-row .lline{display:none}
   .t2-h{font-size:clamp(2rem,8vw,2.6rem);margin:14px 0 0}
@@ -392,7 +392,7 @@ footer .flinks a:hover{color:var(--ink)}
     <span class="candles"><i></i><i></i><i></i></span>
     <span class="wm"><b>MVD</b><span>TRADING ACADEMY</span></span>
   </a>
-  <a href="#registro" class="hdr-cta">Reservar mi lugar</a>
+  <a href="#registro" data-reserve class="hdr-cta">Reservar mi lugar</a>
 </header>
 
 <!-- ═══ DIVE: hero → sección 2 con transición wow (sticky) ═══ -->
@@ -411,12 +411,12 @@ footer .flinks a:hover{color:var(--ink)}
       <div class="hero-top">
         <div class="hero-eyebrow eyebrow">Masterclass gratuita · En vivo · Una vez al mes</div>
         <h1>Una noche de trading real con <em>Esteban Echevarría.</em></h1>
-        <p class="hero-sub-mob">Masterclass <b>gratis y en vivo</b>. Trading de verdad, sin humo, y todas tus preguntas respondidas.</p>
+        <p class="hero-sub-mob">Masterclass <b>gratis y en vivo</b>. Trading de verdad y todas tus preguntas respondidas.</p>
       </div>
       <div class="hero-bot">
-        <p class="hero-sub">Una masterclass <b>gratuita y en vivo</b>. Dos horas para ver cómo opera alguien que vive de esto, llevarte herramientas reales y preguntarle lo que quieras a <b>Esteban Echevarría</b>. Sin humo y sin promesas vacías.</p>
+        <p class="hero-sub">Una masterclass <b>gratuita y en vivo</b>. Dos horas para ver cómo opera alguien que vive de esto, llevarte herramientas reales y preguntarle lo que quieras a <b>Esteban Echevarría</b>. Sin promesas vacías.</p>
         <div class="hero-actions">
-          <a href="#registro" class="cta lg">Reservar mi lugar gratis
+          <a href="#registro" data-reserve class="cta lg">Reservar mi lugar gratis
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z"/></svg>
           </a>
           <a href="#instructor" class="cta-ghost">Ver qué vas a aprender ↓</a>
@@ -432,7 +432,7 @@ footer .flinks a:hover{color:var(--ink)}
 
   <div class="date-chip">
     <span class="pulse"></span>
-    <div><div class="dc-k">Próxima fecha</div><div class="dc-v" id="chipDate"><em>Viernes</em> · 19:30 (UY)</div></div>
+    <div><div class="dc-k">Próxima fecha</div><div class="dc-v" id="chipDate"><em>Miércoles</em> · 19:30 (UY)</div></div>
   </div>
 
   <div class="scroll-hint"><span class="t">Scroll</span><span class="bar"></span></div>
@@ -462,9 +462,9 @@ footer .flinks a:hover{color:var(--ink)}
         <li><span class="n">02</span> Herramientas y conceptos que te llevás puestos</li>
         <li><span class="n">03</span> Cuánto se gana de verdad, con números reales</li>
         <li><span class="n">04</span> Tus preguntas, las que sean, respondidas en vivo</li>
-        <li><span class="n">05</span> Dos horas con Esteban, sin humo ni vueltas</li>
+        <li><span class="n">05</span> Dos horas con Esteban Echevarría, sin vueltas</li>
       </ul>
-      <a href="#registro" class="cta lg">Reservar mi lugar gratis
+      <a href="#registro" data-reserve class="cta lg">Reservar mi lugar gratis
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z"/></svg>
       </a>
     </div>
@@ -534,24 +534,16 @@ footer .flinks a:hover{color:var(--ink)}
           <div class="cd-box"><div class="n" id="cd-m">--</div><div class="l">Min</div></div>
           <div class="cd-box"><div class="n" id="cd-s">--</div><div class="l">Seg</div></div>
         </div>
-        <div class="cd-when">Próxima masterclass · <em id="cdWhenDate">Viernes 19:30 (UY)</em></div>
+        <div class="cd-when">Próxima masterclass · <em id="cdWhenDate">Miércoles 19:30 (UY)</em></div>
       </div>
       <div class="reg-card rv right d1">
-        <form id="regForm" novalidate>
-          <div class="seats"><span class="d"></span> Quedan <span id="seatsN">17</span> cupos para esta fecha</div>
-          <div class="field"><label for="f-name">Nombre y apellido</label><input id="f-name" name="name" type="text" placeholder="Tu nombre" required></div>
-          <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" placeholder="tunombre@email.com" required></div>
-          <div class="field"><label for="f-wpp">WhatsApp <span style="color:var(--muted-2)">(para recordarte)</span></label><input id="f-wpp" name="wpp" type="tel" placeholder="+598 9X XXX XXX"></div>
-          <button type="submit" class="cta">Quiero mi lugar gratis
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z"/></svg>
-          </button>
-          <p class="fineprint">🔒 <b>Gratis</b> · Sin tarjeta · No compartimos tu info</p>
-        </form>
-        <div class="reg-success" id="regSuccess">
-          <div class="ck"><svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
-          <h3>¡Lugar reservado!</h3>
-          <p>Te llega el acceso a tu email en los próximos minutos. Revisá spam por las dudas y nos vemos en vivo.</p>
-        </div>
+        <div class="seats"><span class="d"></span> Quedan <span id="seatsN">17</span> cupos para esta fecha</div>
+        <h3 style="font-family:'Fraunces',serif;font-weight:500;font-size:1.5rem;line-height:1.15;margin:4px 0 10px">Reservá tu lugar en la próxima masterclass.</h3>
+        <p style="color:var(--muted);font-size:.92rem;line-height:1.6;margin-bottom:22px">Te toma 30 segundos. Dejás tu nombre y tu mail, y te llega el acceso a la sala en vivo.</p>
+        <a href="#registro" data-reserve class="cta" style="width:100%;justify-content:center;padding:16px">Reservar mi lugar gratis
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z"/></svg>
+        </a>
+        <p class="fineprint">🔒 <b>Gratis</b> · Sin tarjeta · No compartimos tu info</p>
       </div>
     </div>
     <div class="trust-row rv">
@@ -574,7 +566,7 @@ footer .flinks a:hover{color:var(--ink)}
 <!-- ═══ FLOATING CTA ═══ -->
 <div id="float-cta">
   <div class="fc-t">Masterclass gratuita<b>Cupos limitados</b></div>
-  <a href="#registro">Reservar lugar</a>
+  <a href="#registro" data-reserve>Reservar lugar</a>
 </div>
 
 <script>
@@ -619,20 +611,21 @@ function Chart(canvas, opts){
     const midY=H*(mob?(opts.midM??opts.mid??0.55):(opts.mid??0.52));
     const Y=v=>midY - v*amp;
     const n=closes.length;
-    const li=Math.max(1,Math.min(n-1,Math.round((n-1)*(opts.leaderFrac??1))));   // punto/precio: puede NO ser el final → la línea sigue a su derecha (sin franja vacía)
+    const li=Math.max(1,Math.min(n-1,Math.round((n-1)*(opts.leaderFrac??1))));   // punto/precio: puede NO ser el final → la línea sigue a su derecha
+    const Wc = W - (mob?STEP*0.7:0);   // inset derecho en mobile → la última vela se ve ENTERA (no cortada en el borde)
     const cU=opts.up||'39,211,232', cD=opts.down||'232,116,106', cL=opts.line||cU;
-    const pts=[]; for(let i=0;i<n;i++) pts.push([(i/(n-1))*W, Y(i===li?closes[i]+live:closes[i])]);
+    const pts=[]; for(let i=0;i<n;i++) pts.push([(i/(n-1))*Wc, Y(i===li?closes[i]+live:closes[i])]);
 
     /* área (gradiente sutil) */
     const grd=x.createLinearGradient(0,Math.min(...pts.map(p=>p[1])),0,H);
     grd.addColorStop(0,`rgba(${cL},0.12)`); grd.addColorStop(1,`rgba(${cL},0)`);
     x.beginPath();x.moveTo(pts[0][0],pts[0][1]);for(let i=1;i<n;i++)x.lineTo(pts[i][0],pts[i][1]);
-    x.lineTo(W,H);x.lineTo(0,H);x.closePath();x.fillStyle=grd;x.fill();
+    x.lineTo(Wc,H);x.lineTo(0,H);x.closePath();x.fillStyle=grd;x.fill();
 
     /* velas — fantasma de un lado, brillantes del otro */
     const bw=Math.max(4,STEP*0.5);let lx=0,ly=0;
     for(let i=1;i<n;i++){
-      const u=i/(n-1),cx=u*W,o=closes[i-1],c=(i===li?closes[i]+live:closes[i]),up=c>=o;
+      const u=i/(n-1),cx=u*Wc,o=closes[i-1],c=(i===li?closes[i]+live:closes[i]),up=c>=o;
       const ramp=opts.bright==='left'?lerp(0.9,0.08,u):lerp(0.06,0.9,u);
       const yO=Y(o),yC=Y(c),top=Math.min(yO,yC),bh=Math.max(2,Math.abs(yC-yO)),wick=4+hash(i)*7;
       x.strokeStyle=up?`rgba(${cU},${ramp})`:`rgba(${cD},${ramp})`;
@@ -649,7 +642,7 @@ function Chart(canvas, opts){
     lg.addColorStop(0,`rgba(${cL},0.10)`);lg.addColorStop(0.55,`rgba(${cL},0.55)`);lg.addColorStop(1,`rgba(${cL},0.95)`);
     path();x.lineWidth=2.2;x.strokeStyle=lg;x.stroke();
     /* punto líder (glow + etiqueta) en la posición li */
-    lx=(li/(n-1))*W; ly=pts[li][1];
+    lx=(li/(n-1))*Wc; ly=pts[li][1];
     if(lx){
       const rg=x.createRadialGradient(lx,ly,0,lx,ly,15);rg.addColorStop(0,`rgba(130,234,246,0.85)`);rg.addColorStop(1,`rgba(${cL},0)`);
       x.fillStyle=rg;x.beginPath();x.arc(lx,ly,15,0,7);x.fill();
@@ -681,8 +674,8 @@ function Chart(canvas, opts){
 
 /* instanciar: hero vivo en desktop (respira + precio tick); ESTÁTICO en mobile (dive butter). herida siempre estático = es fondo */
 const isMob=matchMedia('(max-width:760px)').matches;
-Chart(document.getElementById('heroCanvas'), {trend:1, live:true, label:true, bright:'right', amp:0.30, ampM:0.24, mid:0.55, midM:0.72, base:18000, leaderFrac:isMob?0.86:1});
-Chart(document.getElementById('heridaCanvas'), {trend:1, live:false, label:false, bright:'right', amp:0.30, ampM:0.24, mid:0.55, midM:0.72, base:18000, leaderFrac:isMob?0.86:1});
+Chart(document.getElementById('heroCanvas'), {trend:1, live:true, label:true, bright:'right', amp:0.30, ampM:0.24, mid:0.55, midM:0.72, base:18000, leaderFrac:isMob?0.9:1});
+Chart(document.getElementById('heridaCanvas'), {trend:1, live:false, label:false, bright:'right', amp:0.30, ampM:0.24, mid:0.55, midM:0.72, base:18000, leaderFrac:isMob?0.9:1});
 
 /* ═══ DIVE: transición wow hero→sección2 — scroll-based, SOLO CSS transforms (butter, 1:1, sin inercia) ═══ */
 (function(){
@@ -701,7 +694,7 @@ Chart(document.getElementById('heridaCanvas'), {trend:1, live:false, label:false
   function sizeFrame(){
     if(!frame) return; const w=frame.clientWidth, h=frame.clientHeight; if(!w||!h) return;
     const mob=w<760;
-    const sx=mob?12:20, top=mob?86:20, bot=mob?16:20, rx=mob?18:24;   // mobile: techo bajo el header, piso bien abajo
+    const sx=mob?12:20, top=mob?86:20, bot=mob?9:20, rx=mob?18:24;   // mobile: techo bajo el header, piso bien abajo
     frame.querySelectorAll('rect').forEach(r=>{
       r.setAttribute('x',sx); r.setAttribute('y',top);
       r.setAttribute('width',Math.max(0,w-sx*2)); r.setAttribute('height',Math.max(0,h-top-bot));
@@ -714,13 +707,10 @@ Chart(document.getElementById('heridaCanvas'), {trend:1, live:false, label:false
        mientras el texto cambia encima (continuidad perfecta). */
     const zoom = 1 + 1.5*ease(clamp(p/0.55,0,1)) + 0.25*clamp((p-0.55)/0.45,0,1);
     if(mob){
-      /* MOBILE: el zoom bucea en el punto/precio (derecha) y lo lleva al CENTRO; ese punto+número
-         es lo último nítido y después TODO se va a blur (entrada a la sección 2). */
-      const tdp=ease(clamp((p-0.25)/0.5,0,1));   // translate retrasado (cuando el zoom ya es alto) → nunca deja franja vacía
-      const tx=-0.22*innerWidth*tdp, ty=-0.07*innerHeight*tdp;   // acerca el punto (86%,57%) hacia el centro sin descubrir el borde
-      const blur=7*clamp((p-0.6)/0.3,0,1);
-      const tf=`translate(${tx}px,${ty}px) scale(${zoom})`;
-      hCanvas.style.transform=tf; sCanvas.style.transform=tf;
+      /* MOBILE: se acerca un POCO al punto/precio (sin translate = sin franja vacía) y el fondo
+         se va a BLUR TEMPRANO, antes de acercarse del todo (entrada a la sección 2). */
+      const blur=8*clamp((p-0.22)/0.3,0,1);   // blur temprano
+      hCanvas.style.transform=`scale(${zoom})`; sCanvas.style.transform=`scale(${zoom})`;
       const fl=blur>0.05?`blur(${blur.toFixed(2)}px)`:'';
       hCanvas.style.filter=fl; sCanvas.style.filter=fl;
     } else {
@@ -811,10 +801,11 @@ setInterval(tkTick,1300);
 function faqT(btn){const i=btn.closest('.faq-i'),open=i.classList.contains('open');document.querySelectorAll('.faq-i.open').forEach(el=>el.classList.remove('open'));if(!open)i.classList.add('open');}
 
 /* ═══ COUNTDOWN + fecha dinámica (próximo viernes 19:30 UY) — PLACEHOLDER ═══ */
-function nextFriday1930(){const now=new Date(),d=new Date(now);d.setHours(19,30,0,0);const day=d.getDay();let add=(5-day+7)%7;if(add===0&&now>d)add=7;d.setDate(d.getDate()+add);return d;}
-const NEXT=nextFriday1930(),meses=['ene','feb','mar','abr','may','jun','jul','ago','set','oct','nov','dic'];
-document.getElementById('cdWhenDate').textContent=`Viernes ${NEXT.getDate()} de ${meses[NEXT.getMonth()]} · 19:30 (UY)`;
-document.getElementById('chipDate').innerHTML=`<em>Vie ${NEXT.getDate()} ${meses[NEXT.getMonth()]}</em> · 19:30 (UY)`;
+function lastWed1930(y,m){const d=new Date(y,m+1,0,19,30,0,0);d.setDate(d.getDate()-((d.getDay()-3+7)%7));return d;}   // último miércoles del mes 19:30
+function nextMasterclass(){const now=new Date();let d=lastWed1930(now.getFullYear(),now.getMonth());if(d<now)d=lastWed1930(now.getFullYear(),now.getMonth()+1);return d;}
+const NEXT=nextMasterclass(),meses=['ene','feb','mar','abr','may','jun','jul','ago','set','oct','nov','dic'];
+document.getElementById('cdWhenDate').textContent=`Miércoles ${NEXT.getDate()} de ${meses[NEXT.getMonth()]} · 19:30 (UY)`;
+document.getElementById('chipDate').innerHTML=`<em>Mié ${NEXT.getDate()} ${meses[NEXT.getMonth()]}</em> · 19:30 (UY)`;
 const z=n=>String(n).padStart(2,'0');
 function cdTick(){const diff=NEXT-new Date();if(diff<=0){document.getElementById('countdown').innerHTML='<span style="color:var(--cyan);font-family:JetBrains Mono">● EN VIVO AHORA</span>';return;}
   document.getElementById('cd-d').textContent=z(Math.floor(diff/864e5));document.getElementById('cd-h').textContent=z(Math.floor(diff/36e5)%24);document.getElementById('cd-m').textContent=z(Math.floor(diff/6e4)%60);document.getElementById('cd-s').textContent=z(Math.floor(diff/1e3)%60);}
@@ -831,13 +822,11 @@ if(location.search.indexOf('cap')>-1){
   document.querySelectorAll('[data-count]').forEach(el=>{const t=+el.dataset.count;el.textContent=(el.dataset.prefix||'')+(t>=1000?t.toLocaleString('es'):t)+(el.dataset.suffix||'');});
 }
 
-/* ═══ FORM (mock — conectar a n8n/WhatsApp en backend) ═══ */
-document.getElementById('regForm').addEventListener('submit',ev=>{ev.preventDefault();
-  const name=document.getElementById('f-name').value.trim(),email=document.getElementById('f-email').value.trim();
-  if(!name){document.getElementById('f-name').focus();return;}
-  if(!/^[^@]+@[^@]+\.[^@]+$/.test(email)){document.getElementById('f-email').focus();return;}
-  document.getElementById('regForm').style.display='none';
-  document.getElementById('regSuccess').classList.add('show');
+/* ═══ CTAs "Reservar" → WPForms (formulario externo) ═══ */
+const WPFORMS_URL = "#registro";   /* ⬅️ PENDIENTE: pegar acá la URL real del WPForms; mientras tanto los CTA bajan a la sección de registro */
+document.querySelectorAll('[data-reserve]').forEach(a=>{
+  a.setAttribute('href', WPFORMS_URL);
+  if(/^https?:/.test(WPFORMS_URL)){ a.target='_blank'; a.rel='noopener'; }
 });
 </script>
 </body>
