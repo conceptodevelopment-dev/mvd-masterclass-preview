@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Masterclass Gratuita — MVD Trading Academy</title>
+<meta name="description" content="2 horas en vivo con Esteban Echevarría. Aprendé a operar los mercados con método, no con suerte. Sin humo, sin señales, sin venta de promesas.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════════════════════════
+   MVD TRADING — MASTERCLASS LANDING
+   Scroll NATIVO (manteca). Gráficos de velas locales por sección
+   (se van con el scroll, no persiguen nada). Sin grilla, sin
+   shadowBlur por frame. Identidad cian + negro azulado.
+   ═══════════════════════════════════════════════ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+:root{
+  --bg:#05080c;--bg-2:#070c12;--bg-3:#060a10;--bg-card:#0a1119;
+  --ink:#e9f2f6;--muted:#76869a;--muted-2:#566273;
+  --cyan:#27d3e8;--cyan-deep:#11aec4;--cyan-soft:#82eaf6;--cyan-dim:rgba(39,211,232,.12);
+  --coral:#e8746a;--gold:#e8b341;
+  --border:rgba(255,255,255,.07);--border-c:rgba(39,211,232,.20);--glow:rgba(39,211,232,.35);
+  --maxw:1180px;
+}
+body{background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;overflow-x:hidden;line-height:1.5;-webkit-font-smoothing:antialiased}
+::selection{background:var(--cyan);color:#04181c}
+h1,h2,h3,.serif{font-family:'Fraunces',Georgia,serif}
+.mono{font-family:'JetBrains Mono',monospace}
+a{color:inherit;text-decoration:none}
+img,canvas{display:block;max-width:100%}
+.inner{max-width:var(--maxw);margin:0 auto;padding:0 40px}
+@media(max-width:640px){.inner{padding:0 22px}}
+
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:.66rem;font-weight:500;letter-spacing:.28em;text-transform:uppercase;color:var(--cyan);display:inline-flex;align-items:center;gap:12px}
+.eyebrow::before{content:'';width:26px;height:1px;background:var(--cyan);opacity:.6}
+.label-row{display:flex;align-items:center;gap:18px;margin-bottom:30px}
+.label-row .lbl{font-family:'JetBrains Mono',monospace;font-size:.64rem;font-weight:500;letter-spacing:.26em;text-transform:uppercase;color:var(--cyan);white-space:nowrap}
+.label-row .lline{flex:1;height:1px;background:linear-gradient(to right,var(--border-c),transparent)}
+
+/* ════════ HEADER ════════ */
+#hdr{position:fixed;top:0;left:0;width:100%;z-index:900;display:flex;align-items:center;justify-content:space-between;padding:15px 40px;background:linear-gradient(to bottom,rgba(5,8,12,.82),rgba(5,8,12,0));transition:background .4s,border-color .4s,padding .4s;border-bottom:1px solid transparent}
+#hdr.solid{background:rgba(5,8,12,.86);backdrop-filter:blur(18px) saturate(1.3);border-bottom:1px solid var(--border);padding:11px 40px}
+.brand{display:flex;align-items:center;gap:11px}
+.brand .candles{display:flex;align-items:flex-end;gap:3px;height:24px}
+.brand .candles i{width:3px;background:var(--cyan);border-radius:1px;display:block;box-shadow:0 0 8px var(--glow)}
+.brand .candles i:nth-child(1){height:11px;opacity:.55}.brand .candles i:nth-child(2){height:22px}.brand .candles i:nth-child(3){height:16px;opacity:.8}
+.brand .wm{line-height:1}
+.brand .wm b{font-family:'Fraunces',serif;font-weight:600;font-size:1.18rem;letter-spacing:-.01em}
+.brand .wm span{display:block;font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.36em;color:var(--muted);margin-top:2px}
+.hdr-cta{background:var(--cyan);color:#04181c;padding:9px 20px;border-radius:7px;font-size:.74rem;font-weight:700;letter-spacing:.04em;transition:transform .2s,box-shadow .2s,background .2s}
+.hdr-cta:hover{background:var(--cyan-soft);transform:translateY(-1px);box-shadow:0 8px 26px -8px var(--glow)}
+@media(max-width:640px){#hdr{padding:12px 20px}#hdr.solid{padding:10px 20px}.hdr-cta{display:none}}
+
+/* ════════ DIVE — transición wow hero→sección2 (sticky + CSS transforms = butter) ════════ */
+.dive{position:relative;height:200vh}
+.dive-stage{position:sticky;top:0;height:100svh;overflow:hidden}
+.dive-stage>section{position:absolute!important;inset:0;height:100%;min-height:0!important;will-change:transform,opacity}
+.dive-stage #herida{opacity:0}
+.dive.reduced{height:auto}
+.dive.reduced .dive-stage{position:static;height:auto;overflow:visible}
+.dive.reduced .dive-stage>section{position:relative!important;height:auto!important;min-height:100svh;opacity:1!important}
+#heroCanvas{transform-origin:62% 42%;will-change:transform}
+#heridaCanvas{transform-origin:62% 42%;will-change:transform}
+#hero .hero-content{will-change:transform,opacity}
+
+/* ════════ HERO ════════ */
+#hero{position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden;background:#05080c}
+#heroCanvas{position:absolute;inset:0;z-index:1;width:100%;height:100%}
+.hero-grad{position:absolute;inset:0;z-index:2;pointer-events:none;background:
+  linear-gradient(90deg,rgba(5,8,12,.97) 0%,rgba(5,8,12,.93) 36%,rgba(5,8,12,.66) 55%,rgba(5,8,12,.2) 76%,rgba(5,8,12,0) 92%),
+  linear-gradient(to top,rgba(5,8,12,.55) 0%,rgba(5,8,12,0) 32%),
+  linear-gradient(to bottom,rgba(5,8,12,.6) 0%,rgba(5,8,12,0) 16%)}
+.hero-glow{position:absolute;z-index:2;width:560px;height:560px;left:-140px;top:34%;background:radial-gradient(circle,var(--glow) 0%,transparent 62%);opacity:.4;pointer-events:none;filter:blur(8px);transition:transform .25s ease-out}
+
+#ticker{position:absolute;top:64px;left:0;width:100%;z-index:3;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(5,8,12,.4);overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.ticker-track{display:inline-flex;white-space:nowrap;will-change:transform;animation:ticker 36s linear infinite}
+.ticker-track span{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.08em;color:var(--muted);padding:9px 26px;display:inline-flex;gap:8px;align-items:center}
+.ticker-track b{color:var(--ink);font-weight:500}
+.up{color:var(--cyan)}.down{color:var(--coral)}
+@keyframes ticker{to{transform:translateX(-50%)}}
+
+.hero-content{position:relative;z-index:4;width:100%}
+.hero-eyebrow{margin-bottom:24px}
+#hero h1{font-weight:340;font-size:clamp(3rem,6.6vw,5.8rem);line-height:.95;letter-spacing:-.025em;max-width:15ch;margin-bottom:24px}
+#hero h1 em{font-style:italic;color:var(--cyan);font-weight:380}
+.hero-sub{font-size:clamp(1rem,1.35vw,1.18rem);color:rgba(233,242,246,.7);font-weight:300;max-width:48ch;line-height:1.6;margin-bottom:36px}
+.hero-sub b{color:var(--ink);font-weight:500}
+.hero-actions{display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin-bottom:24px}
+.cta{display:inline-flex;align-items:center;gap:11px;background:var(--cyan);color:#04181c;padding:18px 36px;border-radius:12px;font-size:.96rem;font-weight:700;letter-spacing:.01em;box-shadow:0 0 50px -12px var(--glow),0 10px 30px -14px rgba(0,0,0,.7);transition:transform .28s cubic-bezier(.34,1.56,.64,1),box-shadow .28s,background .2s;cursor:pointer;border:none;font-family:inherit}
+.cta:hover{background:var(--cyan-soft);transform:translateY(-3px);box-shadow:0 0 80px -10px var(--glow),0 18px 40px -16px rgba(0,0,0,.7)}
+.cta.lg{padding:20px 44px;font-size:1.02rem;border-radius:13px}
+.cta svg{transition:transform .3s}.cta:hover svg{transform:translateX(5px)}
+.cta-ghost{display:inline-flex;align-items:center;gap:9px;font-size:.86rem;color:var(--muted);font-weight:500;border-bottom:1px solid transparent;transition:color .2s,border-color .2s}
+.cta-ghost:hover{color:var(--ink);border-color:var(--border-c)}
+.hero-micro{display:flex;gap:22px;flex-wrap:wrap;font-size:.78rem;color:var(--muted)}
+.hero-micro span{display:inline-flex;align-items:center;gap:7px}
+.hero-micro .dot{width:5px;height:5px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--glow)}
+
+.date-chip{position:absolute;right:40px;bottom:42px;z-index:4;display:flex;align-items:center;gap:14px;background:rgba(10,17,25,.55);backdrop-filter:blur(14px);border:1px solid var(--border-c);border-radius:13px;padding:14px 18px;box-shadow:0 14px 40px -18px rgba(0,0,0,.8)}
+.date-chip .pulse{width:9px;height:9px;border-radius:50%;background:var(--cyan);position:relative;flex-shrink:0}
+.date-chip .pulse::after{content:'';position:absolute;inset:-5px;border-radius:50%;border:1px solid var(--cyan);animation:pulse 2s ease-out infinite}
+@keyframes pulse{0%{transform:scale(.6);opacity:.9}100%{transform:scale(1.7);opacity:0}}
+.date-chip .dc-k{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.date-chip .dc-v{font-size:.92rem;font-weight:600;letter-spacing:-.01em}
+.date-chip .dc-v em{font-style:normal;color:var(--cyan)}
+@media(max-width:768px){.date-chip{display:none}}
+
+.scroll-hint{position:absolute;left:40px;bottom:34px;z-index:4;display:flex;flex-direction:column;align-items:center;gap:8px}
+.scroll-hint .bar{width:1px;height:34px;background:linear-gradient(var(--cyan),transparent);animation:drop 1.8s ease-in-out infinite}
+.scroll-hint .t{font-family:'JetBrains Mono',monospace;font-size:.56rem;letter-spacing:.24em;text-transform:uppercase;color:var(--muted-2);writing-mode:vertical-rl}
+@keyframes drop{0%,100%{opacity:.3;transform:scaleY(.5)}55%{opacity:1;transform:scaleY(1)}}
+@media(max-width:640px){.scroll-hint{display:none}}
+
+/* ════════ SECCIÓN GENÉRICA ════════ */
+section.blk{padding:120px 0;position:relative}
+@media(max-width:768px){section.blk{padding:84px 0}}
+
+/* ── 2. QUÉ TE LLEVÁS — emerge de la transición, gráfico CIAN de fondo (continúa la magia) ── */
+#herida{min-height:100vh;position:relative;overflow:hidden;background:#05080c;display:flex;align-items:center;padding:120px 0}
+#heridaCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:1;transition:filter .7s ease}
+.herida-grad{position:absolute;inset:0;z-index:2;pointer-events:none;background:
+  linear-gradient(90deg,rgba(5,8,12,.97) 0%,rgba(5,8,12,.92) 38%,rgba(5,8,12,.62) 58%,rgba(5,8,12,.2) 80%,rgba(5,8,12,0) 98%),
+  linear-gradient(to bottom,rgba(5,8,12,.5),rgba(5,8,12,0) 22%)}
+.herida-inner{position:relative;z-index:3;width:100%}
+.t2-wrap{max-width:600px}
+.t2-h{font-family:'Fraunces',serif;font-weight:340;font-size:clamp(2.4rem,5vw,4rem);line-height:1.0;letter-spacing:-.025em;margin:14px 0 30px}
+.t2-h em{font-style:italic;color:var(--cyan)}
+.t2-list{list-style:none;display:flex;flex-direction:column;gap:0;margin-bottom:36px}
+.t2-list li{display:flex;align-items:baseline;gap:18px;font-size:clamp(1rem,1.55vw,1.24rem);font-weight:400;color:rgba(233,242,246,.94);line-height:1.3;border-bottom:1px solid var(--border);padding:15px 0}
+.t2-list li:first-child{border-top:1px solid var(--border)}
+.t2-list .n{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--cyan);font-weight:500;flex-shrink:0;transform:translateY(-1px)}
+@media(max-width:768px){.t2-list li{font-size:1rem;padding:12px 0}.t2-h{font-size:clamp(2rem,8vw,2.7rem)}#herida{align-items:flex-start;padding-top:90px}}
+
+/* ── MARCO "LAVA": contorno que se dibuja al llegar (scroll-driven) + plasma que gira (CSS, gated en .live) ── */
+.herida-frame{position:absolute;inset:0;width:100%;height:100%;z-index:4;pointer-events:none;overflow:visible;transform-origin:50% 50%}
+.herida-frame rect{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.herida-frame .ff-glow{stroke:var(--cyan);stroke-width:11;opacity:.18;stroke-dasharray:1000;stroke-dashoffset:1000}
+.herida-frame .ff-trail{stroke:url(#frameGrad);stroke-width:3.4;stroke-dasharray:1000;stroke-dashoffset:1000}
+.herida-frame .ff-c2{stroke:#6ad9ff;stroke-width:2.6;stroke-dasharray:90 910;stroke-dashoffset:0;opacity:0;filter:drop-shadow(0 0 12px rgba(106,217,255,.85))}
+.herida-frame .ff-c1{stroke:#eafdff;stroke-width:3.2;stroke-dasharray:130 870;stroke-dashoffset:0;opacity:0;filter:drop-shadow(0 0 12px rgba(180,245,255,.95))}
+.herida-frame .ff-head{stroke:#eafdff;stroke-width:4;stroke-dasharray:42 958;stroke-dashoffset:42;opacity:0;filter:drop-shadow(0 0 10px rgba(130,234,246,.95)) drop-shadow(0 0 22px rgba(39,211,232,.7))}
+.herida-frame.live{animation:ff-breathe 4.5s ease-in-out infinite}
+.herida-frame.live .ff-trail{filter:drop-shadow(0 0 9px rgba(39,211,232,.55));transition:filter .6s ease}
+.herida-frame.live .ff-c1{opacity:.95;animation:ff-spin 2.8s linear infinite}
+.herida-frame.live .ff-c2{opacity:.8;animation:ff-spin-rev 4.4s linear infinite}
+@keyframes ff-spin{to{stroke-dashoffset:-1000}}
+@keyframes ff-spin-rev{to{stroke-dashoffset:1000}}
+@keyframes ff-breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.014)}}
+/* Sección 2 "otro lugar": al llegar, el gráfico se desenfoca/atenúa (queda de fondo) y entra un aura propia */
+.herida-aura{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;transition:opacity .9s ease;
+  background:radial-gradient(120% 95% at 80% 48%,rgba(39,211,232,.18),transparent 55%),radial-gradient(110% 110% at 45% 118%,rgba(11,159,214,.14),transparent 60%)}
+#herida.arrived .herida-aura{opacity:1}
+#herida.arrived #heridaCanvas{filter:blur(8px) brightness(.78) saturate(1.2)}
+@media(max-width:760px){.herida-frame .ff-c2{display:none}}  /* mobile: un cometa + latido (liviano) */
+@media(prefers-reduced-motion:reduce){.herida-frame .ff-c1,.herida-frame .ff-c2{display:none}.herida-frame.live{animation:none}#herida.arrived #heridaCanvas{filter:none}}
+
+/* ── 3. ESTEBAN ── */
+#instructor{position:relative;overflow:hidden;background:#070c12}
+.instr-bg{position:absolute;inset:0;z-index:0;pointer-events:none;background:
+  radial-gradient(90% 120% at 82% 40%,var(--cyan-dim),transparent 58%),
+  repeating-linear-gradient(0deg,rgba(255,255,255,.016) 0 1px,transparent 1px 64px),
+  repeating-linear-gradient(90deg,rgba(255,255,255,.016) 0 1px,transparent 1px 64px)}
+.instr-inner{position:relative;z-index:1}
+.instr-grid{display:grid;grid-template-columns:1fr 360px;gap:64px;align-items:center}
+.instr-name{font-weight:400;font-size:clamp(2.3rem,4vw,3.5rem);line-height:1;letter-spacing:-.02em;margin:14px 0 6px}
+.instr-role{font-family:'JetBrains Mono',monospace;font-size:.74rem;letter-spacing:.1em;color:var(--cyan);margin-bottom:28px}
+.instr-bio{font-size:1.02rem;line-height:1.75;color:rgba(233,242,246,.8);font-weight:300;max-width:54ch;margin-bottom:26px}
+.instr-bio b{color:var(--ink);font-weight:500}
+.instr-quote{border-left:2px solid var(--cyan);padding:6px 0 6px 22px;margin-bottom:30px;font-family:'Fraunces',serif;font-style:italic;font-size:1.22rem;line-height:1.45;color:rgba(233,242,246,.92);max-width:40ch}
+.cred-row{display:flex;flex-wrap:wrap;gap:10px}
+.cred{display:inline-flex;align-items:center;gap:8px;background:rgba(10,17,25,.6);border:1px solid var(--border);border-radius:9px;padding:9px 14px;font-size:.78rem;color:rgba(233,242,246,.85);backdrop-filter:blur(8px)}
+.cred svg{flex-shrink:0;color:var(--cyan)}
+.instr-photo{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--border-c);aspect-ratio:4/5;background:linear-gradient(180deg,#0b131c,#070d14);box-shadow:0 30px 70px -30px rgba(0,0,0,.9);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:24px}
+.instr-photo .ph-ico{width:78px;height:78px;border-radius:50%;border:1px solid var(--border-c);background:var(--cyan-dim);display:flex;align-items:center;justify-content:center;color:var(--cyan)}
+.instr-photo .ph-t{font-family:'Fraunces',serif;font-size:1.15rem;color:var(--ink)}
+.instr-photo .ph-s{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted-2)}
+.instr-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(120deg,rgba(39,211,232,.07),transparent 60%);pointer-events:none}
+.instr-photo .tag{position:absolute;left:14px;bottom:14px;font-family:'JetBrains Mono',monospace;font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);background:rgba(5,8,12,.5);backdrop-filter:blur(6px);padding:6px 10px;border-radius:6px;border:1px solid var(--border)}
+
+/* ── 4. AGENDA ── */
+#agenda{background:#05080c}
+.agenda-head{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:end;margin-bottom:56px}
+.agenda-head h2{font-weight:380;font-size:clamp(2rem,3.6vw,3.1rem);line-height:1.04;letter-spacing:-.02em}
+.agenda-head h2 em{font-style:italic;color:var(--cyan)}
+.agenda-head p{color:var(--muted);font-size:.98rem;line-height:1.7;font-weight:300}
+.agenda-list{display:flex;flex-direction:column;border-top:1px solid var(--border)}
+.ag-item{display:grid;grid-template-columns:64px 1fr auto;gap:24px;align-items:center;padding:26px 8px;border-bottom:1px solid var(--border);transition:background .3s,padding .3s}
+.ag-item:hover{background:linear-gradient(90deg,var(--cyan-dim),transparent 70%);padding-left:18px}
+.ag-num{font-family:'JetBrains Mono',monospace;font-size:.9rem;color:var(--cyan);font-weight:500}
+.ag-txt h3{font-weight:500;font-family:'Inter',sans-serif;font-size:1.12rem;letter-spacing:-.01em;margin-bottom:4px}
+.ag-txt p{font-size:.88rem;color:var(--muted);font-weight:300;line-height:1.55}
+.ag-arrow{color:var(--muted-2);opacity:0;transform:translateX(-6px);transition:.3s}
+.ag-item:hover .ag-arrow{opacity:1;transform:none;color:var(--cyan)}
+.agenda-note{margin-top:34px;display:inline-flex;align-items:center;gap:11px;font-size:.9rem;color:var(--muted)}
+.agenda-note b{color:var(--ink);font-weight:500}.agenda-note .ic{color:var(--cyan)}
+.mid-cta{margin-top:54px;display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap;background:linear-gradient(120deg,rgba(39,211,232,.10),rgba(10,17,25,.4));border:1px solid var(--border-c);border-radius:18px;padding:30px 34px}
+.mid-cta .mc-t{font-family:'Fraunces',serif;font-size:clamp(1.4rem,2.4vw,2rem);line-height:1.12;letter-spacing:-.02em;max-width:24ch}
+.mid-cta .mc-t em{font-style:italic;color:var(--cyan)}
+
+/* ── 5. PRUEBA SOCIAL ── */
+#prueba{background:#070c12}
+.stats-band{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:72px}
+.stat{text-align:center;padding:8px}
+.stat .num{font-family:'Fraunces',serif;font-weight:500;font-size:clamp(2.8rem,5vw,4.2rem);line-height:1;color:var(--cyan);letter-spacing:-.02em}
+.stat .lbl{font-size:.82rem;color:var(--muted);margin-top:8px;letter-spacing:.02em}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:60px}
+.testi{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:28px 26px;transition:border-color .35s,transform .35s;display:flex;flex-direction:column}
+.testi:hover{border-color:var(--border-c);transform:translateY(-4px)}
+.testi .stars{color:var(--gold);font-size:.86rem;letter-spacing:2px;margin-bottom:16px}
+.testi p{font-size:.92rem;line-height:1.7;color:rgba(233,242,246,.82);font-weight:300;margin-bottom:22px;flex:1}
+.testi .who{display:flex;align-items:center;gap:12px}
+.testi .ava{width:40px;height:40px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.8rem;font-weight:700;color:#04181c;background:linear-gradient(135deg,var(--cyan),var(--cyan-deep))}
+.testi .who b{font-size:.88rem;font-weight:600;display:block}
+.testi .who span{font-size:.72rem;color:var(--muted)}
+.backers{border-top:1px solid var(--border);padding-top:40px;text-align:center}
+.backers .k{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;color:var(--muted-2);margin-bottom:20px}
+.backers .row{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:14px 34px}
+.backers .row b{font-weight:600;font-size:1.02rem;color:rgba(233,242,246,.55);letter-spacing:.02em;transition:color .3s}
+.backers .row b:hover{color:var(--ink)}
+.backers .sep{color:var(--muted-2)}
+.media-row{margin-top:26px;font-size:.8rem;color:var(--muted-2)}.media-row b{color:var(--muted)}
+
+/* ── 6. FAQ ── */
+#faq{background:#05080c}
+.faq-wrap{max-width:760px;margin:0 auto}
+.faq-head{text-align:center;margin-bottom:48px}
+.faq-head h2{font-weight:400;font-size:clamp(1.9rem,3vw,2.7rem);letter-spacing:-.02em;line-height:1.08}
+.faq-list{display:flex;flex-direction:column;gap:11px}
+.faq-i{background:var(--bg-card);border:1px solid var(--border);border-radius:13px;overflow:hidden;transition:border-color .3s}
+.faq-i.open{border-color:var(--border-c)}
+.faq-q{width:100%;background:none;border:none;padding:21px 24px;display:flex;justify-content:space-between;align-items:center;gap:16px;color:var(--ink);font-family:inherit;font-size:.98rem;font-weight:500;text-align:left;cursor:pointer}
+.faq-q .ic{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--cyan-dim);border:1px solid var(--border-c);color:var(--cyan);display:flex;align-items:center;justify-content:center;font-size:1.2rem;transition:transform .35s cubic-bezier(.22,1,.36,1)}
+.faq-i.open .ic{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .42s cubic-bezier(.22,1,.36,1)}
+.faq-i.open .faq-a{max-height:240px}
+.faq-a div{padding:0 24px 22px;color:var(--muted);font-size:.92rem;line-height:1.72;font-weight:300}
+
+/* ── 7. REGISTRO ── */
+#registro{position:relative;overflow:hidden;background:#070c12;border-top:1px solid var(--border)}
+#registro::before{content:'';position:absolute;top:-300px;left:50%;transform:translateX(-50%);width:900px;height:900px;background:radial-gradient(circle,var(--cyan-dim),transparent 62%);pointer-events:none}
+.reg-grid{position:relative;z-index:1;display:grid;grid-template-columns:1fr 460px;gap:64px;align-items:center}
+.reg-left h2{font-weight:380;font-size:clamp(2.4rem,4.6vw,3.9rem);line-height:1.02;letter-spacing:-.025em;margin-bottom:20px}
+.reg-left h2 em{font-style:italic;color:var(--cyan)}
+.reg-left p{color:rgba(233,242,246,.7);font-size:1.04rem;line-height:1.65;font-weight:300;max-width:42ch;margin-bottom:30px}
+.countdown{display:flex;gap:12px;margin-bottom:14px}
+.cd-box{background:var(--bg-card);border:1px solid var(--border-c);border-radius:11px;padding:12px 0;width:74px;text-align:center}
+.cd-box .n{font-family:'JetBrains Mono',monospace;font-size:1.7rem;font-weight:700;color:var(--ink);line-height:1}
+.cd-box .l{font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+.cd-when{font-family:'JetBrains Mono',monospace;font-size:.74rem;color:var(--muted);letter-spacing:.05em}
+.cd-when em{font-style:normal;color:var(--cyan)}
+.reg-card{background:linear-gradient(180deg,var(--bg-card),#070d14);border:1px solid var(--border-c);border-radius:20px;padding:32px 30px;box-shadow:0 40px 90px -40px rgba(0,0,0,.9),0 0 0 1px rgba(39,211,232,.04);position:relative}
+.reg-card .seats{display:inline-flex;align-items:center;gap:9px;background:rgba(232,116,106,.1);border:1px solid rgba(232,116,106,.28);color:#f0938a;border-radius:100px;padding:6px 13px;font-size:.72rem;font-family:'JetBrains Mono',monospace;letter-spacing:.06em;margin-bottom:22px}
+.reg-card .seats .d{width:7px;height:7px;border-radius:50%;background:var(--coral);animation:blink 1.4s ease-in-out infinite}
+@keyframes blink{50%{opacity:.3}}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:.74rem;color:var(--muted);margin-bottom:7px;font-weight:500;letter-spacing:.02em}
+.field input{width:100%;background:#05080c;border:1px solid var(--border);border-radius:10px;padding:14px 15px;color:var(--ink);font-family:inherit;font-size:.94rem;transition:border-color .2s,box-shadow .2s}
+.field input::placeholder{color:var(--muted-2)}
+.field input:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 3px rgba(39,211,232,.12)}
+.reg-card .cta{width:100%;justify-content:center;margin-top:8px;padding:16px}
+.reg-card .fineprint{margin-top:14px;text-align:center;font-size:.74rem;color:var(--muted)}
+.reg-card .fineprint b{color:var(--cyan-soft);font-weight:500}
+.reg-success{display:none;text-align:center;padding:18px 6px}
+.reg-success.show{display:block;animation:pop .5s cubic-bezier(.34,1.56,.64,1)}
+@keyframes pop{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
+.reg-success .ck{width:60px;height:60px;border-radius:50%;background:var(--cyan-dim);border:1px solid var(--border-c);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;color:var(--cyan)}
+.reg-success h3{font-family:'Fraunces',serif;font-weight:500;font-size:1.5rem;margin-bottom:8px}
+.reg-success p{color:var(--muted);font-size:.9rem;line-height:1.6}
+.trust-row{display:flex;justify-content:center;gap:30px;flex-wrap:wrap;margin-top:46px;position:relative;z-index:1}
+.trust-row div{display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--muted)}
+.trust-row .ic{color:var(--cyan)}
+
+/* ── FOOTER ── */
+footer{background:#060a10;border-top:1px solid var(--border);padding:46px 0 36px;text-align:center}
+footer .fbrand{display:inline-flex;align-items:center;gap:10px;margin-bottom:18px}
+footer .disc{max-width:640px;margin:0 auto 18px;font-size:.74rem;color:var(--muted-2);line-height:1.7}
+footer .flinks{font-size:.78rem;color:var(--muted)}
+footer .flinks a:hover{color:var(--ink)}
+
+/* ── FLOATING CTA ── */
+#float-cta{position:fixed;left:50%;bottom:20px;transform:translate(-50%,140%);z-index:800;display:flex;align-items:center;gap:14px;background:rgba(10,17,25,.82);backdrop-filter:blur(18px);border:1px solid var(--border-c);border-radius:14px;padding:10px 12px 10px 18px;box-shadow:0 20px 50px -20px rgba(0,0,0,.9);transition:transform .45s cubic-bezier(.22,1,.36,1);width:min(420px,calc(100% - 32px));justify-content:space-between}
+#float-cta.show{transform:translate(-50%,0)}
+#float-cta .fc-t{font-size:.8rem;color:var(--muted)}
+#float-cta .fc-t b{display:block;color:var(--ink);font-size:.92rem;font-weight:600}
+#float-cta a{background:var(--cyan);color:#04181c;padding:11px 18px;border-radius:9px;font-size:.82rem;font-weight:700;white-space:nowrap}
+
+/* ── REVEAL (variado, no todo igual) ── */
+.rv{opacity:0;transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1);transform:translateY(30px)}
+.rv.grow{transform:scale(.9)}
+.rv.left{transform:translateX(-42px)}
+.rv.right{transform:translateX(42px)}
+.rv.in{opacity:1;transform:none}
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}.d5{transition-delay:.4s}
+
+/* ── RESPONSIVE ── */
+@media(max-width:980px){
+  .instr-grid,.reg-grid{grid-template-columns:1fr;gap:44px}
+  .instr-grid{gap:40px}.instr-photo{max-width:300px}
+  .agenda-head{grid-template-columns:1fr;gap:18px}
+  .stats-band,.testi-grid{grid-template-columns:1fr}
+  .testi-grid{gap:14px}.stats-band{gap:34px;margin-bottom:54px}
+  .mid-cta{flex-direction:column;align-items:flex-start;text-align:left}
+}
+@media(max-width:640px){
+  .reg-card{padding:26px 22px}
+  .ag-item{grid-template-columns:44px 1fr;gap:14px;padding:20px 4px}
+  .ag-arrow{display:none}
+  .countdown{gap:9px}.cd-box{width:64px}
+}
+
+/* ════════════════ MOBILE — repensado de cero (≤760px) ════════════════
+   Gráfico = fondo ambiental (gradiente vertical), texto anclado abajo,
+   CTAs full-width, tap targets grandes. Manteca: charts estáticos + sin snap. */
+@media(max-width:760px){
+  body{-webkit-tap-highlight-color:transparent}
+  .inner{padding:0 20px}
+
+  /* HERO: visual de fondo arriba, texto abajo (principio mobile-first) */
+  #hero{align-items:flex-end;padding-bottom:11vh}
+  #heroCanvas,#heridaCanvas{transform-origin:50% 36%}
+  .hero-grad{background:
+    linear-gradient(to top,rgba(5,8,12,.98) 0%,rgba(5,8,12,.92) 24%,rgba(5,8,12,.6) 50%,rgba(5,8,12,.18) 78%,rgba(5,8,12,0) 100%),
+    linear-gradient(to bottom,rgba(5,8,12,.65) 0%,rgba(5,8,12,0) 20%)}
+  .hero-content{align-self:flex-end}
+  .hero-eyebrow{margin-bottom:16px}
+  #hero h1{font-size:clamp(2.5rem,10.5vw,3.5rem);line-height:.98;max-width:15ch;margin-bottom:18px}
+  .hero-sub{font-size:1rem;line-height:1.55;max-width:40ch;margin-bottom:24px}
+  .hero-actions{flex-direction:column;align-items:stretch;gap:13px;margin-bottom:22px}
+  .hero-actions .cta{justify-content:center;width:100%;padding:18px 24px}
+  .cta.lg{padding:18px 24px;font-size:1rem}
+  .cta-ghost{justify-content:center;padding:6px}
+  .hero-micro{gap:8px 16px;font-size:.74rem}
+  #ticker{top:54px}
+
+  /* SECCIÓN 2: texto full-width, gradiente vertical, CTA full-width */
+  .herida-grad{background:
+    linear-gradient(to top,rgba(5,8,12,.97) 0%,rgba(5,8,12,.88) 28%,rgba(5,8,12,.52) 58%,rgba(5,8,12,.14) 86%,rgba(5,8,12,0) 100%)}
+  .t2-wrap{max-width:none}
+  #herida .cta{justify-content:center;width:100%}
+
+  /* INSTRUCTOR: la foto manda → primero, luego la bio */
+  .instr-grid{display:flex;flex-direction:column;gap:28px}
+  .instr-photo{order:-1;max-width:none;width:100%;aspect-ratio:16/10}
+
+  /* REGISTRO */
+  .reg-left p{max-width:none}
+  .reg-card .cta{width:100%}
+
+  /* FLOAT CTA: respeta el área segura del home indicator */
+  #float-cta{bottom:max(16px,env(safe-area-inset-bottom))}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms!important;animation-iteration-count:1!important}
+  .rv{opacity:1!important;transform:none!important}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header id="hdr">
+  <a class="brand" href="#">
+    <span class="candles"><i></i><i></i><i></i></span>
+    <span class="wm"><b>MVD</b><span>TRADING ACADEMY</span></span>
+  </a>
+  <a href="#registro" class="hdr-cta">Reservar mi lugar</a>
+</header>
+
+<!-- ═══ DIVE: hero → sección 2 con transición wow (sticky) ═══ -->
+<div class="dive" id="dive"><div class="dive-stage">
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <canvas id="heroCanvas"></canvas>
+  <div class="hero-grad"></div>
+  <div class="hero-glow" id="heroGlow"></div>
+
+  <div id="ticker"><div class="ticker-track" id="tickTrack"></div></div>
+
+  <div class="hero-content">
+    <div class="inner">
+      <div class="hero-eyebrow eyebrow">Masterclass gratuita · En vivo · Una vez al mes</div>
+      <h1>Aprendé a leer el mercado <em>en una noche.</em></h1>
+      <p class="hero-sub">2 horas en vivo con <b>Esteban Echevarría</b> — de chef a trader full-time. Vas a ver, en tiempo real, cómo opera alguien que vive de esto. <b>Sin humo, sin señales, sin venta de promesas.</b></p>
+      <div class="hero-actions">
+        <a href="#registro" class="cta lg">Reservar mi lugar gratis
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z"/></svg>
+        </a>
+        <a href="#agenda" class="cta-ghost">Ver qué vas a aprender ↓</a>
+      </div>
+      <div class="hero-micro">
+        <span><i class="dot"></i> Gratis · Sin tarjeta</span>
+        <span><i class="dot"></i> Cupos limitados</span>
+        <span><i class="dot"></i> +2.500 alumnos · Mejor Academia 2025</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="date-chip">
+    <span class="pulse"></span>
+    <div><div class="dc-k">Próxima fecha</div><div class="dc-v" id="chipDate"><em>Viernes</em> · 19:30 (UY)</div></div>
+  </div>
+
+  <div class="scroll-hint"><span class="t">Scroll</span><span class="bar"></span></div>
+</section>
+
+<!-- ═══ 2 · QUÉ TE LLEVÁS (emerge de la transición; gráfico cian de fondo, continúa la magia) ═══ -->
+<section id="herida">
+  <canvas id="heridaCanvas"></canvas>
+  <div class="herida-grad"></div>
+  <div class="herida-aura"></div>
+  <svg class="herida-frame" id="heridaFrame" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="frameGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b9fd6"/><stop offset=".28" stop-color="#27d3e8"/>
+      <stop offset=".5" stop-color="#cffaff"/><stop offset=".72" stop-color="#27d3e8"/>
+      <stop offset="1" stop-color="#6ad9ff"/>
+    </linearGradient></defs>
+    <rect class="ff-glow"  pathLength="1000"/>
+    <rect class="ff-trail" pathLength="1000"/>
+    <rect class="ff-c2"    pathLength="1000"/>
+    <rect class="ff-c1"    pathLength="1000"/>
+    <rect class="ff-head"  pathLength="1000"/>
+  </svg>
+  <div class="inner herida-inner">
+    <div class="t2-wrap">
+      <div class="label-row"><span class="lbl">La masterclass · 2 horas en vivo</span><div class="lline"></div></div>
+      <h2 class="t2-h">Esto es lo que te <em>llevás.</em></h2>
+      <ul class="t2-list">
+        <li><span class="n">01</span> Cómo leer un gráfico sin señales ni humo</li>
+        <li><span class="n">02</span> La gestión de riesgo que separa a los que duran</li>
+        <li><span class="n">03</span> Cómo operar con poco capital sin volar la cuenta</li>
+        <li><span class="n">04</span> Un setup completo, en vivo, de principio a fin</li>
+        <li><span class="n">05</span> Cómo se piensa una operación: del análisis a la salida</li>
+      </ul>
+      <a href="#registro" class="cta lg">Reservar mi lugar gratis
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+</div></div><!-- /dive -->
+
+<!-- ═══ 3 · ESTEBAN ═══ -->
+<section id="instructor" class="blk">
+  <div class="instr-bg"></div>
+  <div class="inner instr-inner">
+    <div class="instr-grid">
+      <div class="rv left">
+        <div class="label-row"><span class="lbl">Tu instructor</span><div class="lline"></div></div>
+        <h2 class="instr-name">Esteban Echevarría</h2>
+        <p class="instr-role">Fundador · MVD Trading · Trader full-time desde 2012</p>
+        <p class="instr-bio">Empezó en una cocina, no en Wall Street. <b>De chef a trader</b>, se formó a fuerza de años de prueba, error y miles de horas frente al gráfico — incluyendo estudios en <b>Harvard</b>. Hoy opera todos los días y enseña exactamente lo que hace: price action real, gestión de riesgo institucional y psicología operativa. <b>Sin atajos. Sin promesas vacías.</b></p>
+        <blockquote class="instr-quote">"El trading no es suerte. Es método, gestión y disciplina. Y eso sí se puede enseñar."</blockquote>
+        <div class="cred-row">
+          <span class="cred"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6 4.5 2.3 7.1L12 16.6 5.7 21l2.3-7.1-6-4.5h7.6z"/></svg> Emprendedor del Año 2023</span>
+          <span class="cred"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6 4.5 2.3 7.1L12 16.6 5.7 21l2.3-7.1-6-4.5h7.6z"/></svg> Mejor Academia 2025 · Rankia</span>
+          <span class="cred"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Registrado en el MEC</span>
+          <span class="cred"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Partner NinjaTrader</span>
+        </div>
+      </div>
+      <div class="rv right d1">
+        <div class="instr-photo">
+          <span class="ph-ico"><svg width="34" height="34" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 100-10 5 5 0 000 10zm0 2c-4.42 0-8 2.69-8 6v2h16v-2c0-3.31-3.58-6-8-6z"/></svg></span>
+          <div class="ph-t">Esteban Echevarría</div>
+          <div class="ph-s">Foto profesional · próximamente</div>
+          <span class="tag">Montevideo · MVD Trading</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- (sección "95% pierde" y "Resultados reales" removidas — 100% foco en venta) -->
+
+<!-- ═══ 6 · FAQ ═══ -->
+<section id="faq" class="blk">
+  <div class="inner">
+    <div class="faq-wrap">
+      <div class="faq-head rv"><h2>Todo lo que querés saber<br>antes de anotarte.</h2></div>
+      <div class="faq-list">
+        <div class="faq-i rv"><button class="faq-q" onclick="faqT(this)">¿La masterclass es realmente gratuita?<span class="ic">+</span></button><div class="faq-a"><div>Sí, 100% gratuita. No necesitás tarjeta ni ningún pago. Solo tu nombre y mail para enviarte el acceso a la sala en vivo.</div></div></div>
+        <div class="faq-i rv d1"><button class="faq-q" onclick="faqT(this)">¿Necesito experiencia previa en trading?<span class="ic">+</span></button><div class="faq-a"><div>No. Está pensada para que un principiante entienda todo desde cero, y para que alguien con experiencia se lleve igual conceptos avanzados. Arrancamos por los fundamentos y subimos en las 2 horas.</div></div></div>
+        <div class="faq-i rv d1"><button class="faq-q" onclick="faqT(this)">¿Me van a querer vender algo?<span class="ic">+</span></button><div class="faq-a"><div>Al final vas a conocer las opciones de formación para quien quiera seguir. Pero la masterclass es puro contenido: podés venir, aprender todo y no comprar nada. Sin presión y sin letra chica.</div></div></div>
+        <div class="faq-i rv d1"><button class="faq-q" onclick="faqT(this)">¿Es online o presencial? ¿Queda grabada?<span class="ic">+</span></button><div class="faq-a"><div>Es 100% online y en vivo. Es en vivo a propósito: lo mejor pasa en las preguntas y respuestas con Esteban. No garantizamos grabación, así que te conviene estar presente.</div></div></div>
+        <div class="faq-i rv d1"><button class="faq-q" onclick="faqT(this)">¿Cuánto dura y qué necesito?<span class="ic">+</span></button><div class="faq-a"><div>Dos horas. Solo necesitás una compu o el celular con internet. Te recomendamos verla tranquilo, con algo para tomar notas — vas a querer anotar.</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 7 · REGISTRO ═══ -->
+<section id="registro" class="blk">
+  <div class="inner">
+    <div class="reg-grid">
+      <div class="reg-left rv left">
+        <div class="label-row"><span class="lbl">Último paso</span><div class="lline"></div></div>
+        <h2>Tu próximo movimiento. <em>Es gratis.</em></h2>
+        <p>La masterclass es una vez al mes y los cupos se llenan en días. Te toma 30 segundos asegurar tu lugar en la próxima fecha en vivo.</p>
+        <div class="countdown" id="countdown">
+          <div class="cd-box"><div class="n" id="cd-d">--</div><div class="l">Días</div></div>
+          <div class="cd-box"><div class="n" id="cd-h">--</div><div class="l">Horas</div></div>
+          <div class="cd-box"><div class="n" id="cd-m">--</div><div class="l">Min</div></div>
+          <div class="cd-box"><div class="n" id="cd-s">--</div><div class="l">Seg</div></div>
+        </div>
+        <div class="cd-when">Próxima masterclass · <em id="cdWhenDate">Viernes 19:30 (UY)</em></div>
+      </div>
+      <div class="reg-card rv right d1">
+        <form id="regForm" novalidate>
+          <div class="seats"><span class="d"></span> Quedan <span id="seatsN">17</span> cupos para esta fecha</div>
+          <div class="field"><label for="f-name">Nombre y apellido</label><input id="f-name" name="name" type="text" placeholder="Tu nombre" required></div>
+          <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" placeholder="tunombre@email.com" required></div>
+          <div class="field"><label for="f-wpp">WhatsApp <span style="color:var(--muted-2)">(para recordarte)</span></label><input id="f-wpp" name="wpp" type="tel" placeholder="+598 9X XXX XXX"></div>
+          <button type="submit" class="cta">Quiero mi lugar gratis
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z"/></svg>
+          </button>
+          <p class="fineprint">🔒 <b>Gratis</b> · Sin tarjeta · No compartimos tu info</p>
+        </form>
+        <div class="reg-success" id="regSuccess">
+          <div class="ck"><svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+          <h3>¡Lugar reservado!</h3>
+          <p>Te llega el acceso a tu email en los próximos minutos. Revisá spam por las dudas y nos vemos en vivo.</p>
+        </div>
+      </div>
+    </div>
+    <div class="trust-row rv">
+      <div><span class="ic">★</span> Mejor Academia 2025 — Rankia</div>
+      <div><span class="ic">✓</span> +2.500 alumnos formados</div>
+      <div><span class="ic">✓</span> 11 años · Montevideo</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="inner">
+    <div class="fbrand"><span class="candles" style="height:20px"><i style="width:3px;background:var(--cyan);height:9px;display:block;border-radius:1px"></i></span><b style="font-family:'Fraunces',serif;font-size:1.05rem">MVD Trading Academy</b></div>
+    <p class="disc">Academia de inversiones registrada en Uruguay · Montevideo. El trading en mercados financieros involucra alto riesgo de pérdida de capital. El contenido de esta página y de la masterclass es exclusivamente educativo y no constituye asesoramiento financiero ni promesa de rendimiento.</p>
+    <p class="flinks"><a href="#">Términos y condiciones</a> · <a href="#">Política de privacidad</a> · © 2026 MVD Trading Academy</p>
+  </div>
+</footer>
+
+<!-- ═══ FLOATING CTA ═══ -->
+<div id="float-cta">
+  <div class="fc-t">Masterclass gratuita<b>Cupos limitados</b></div>
+  <a href="#registro">Reservar lugar</a>
+</div>
+
+<script>
+/* ════════════════════════════════════════════════════════════
+   MOTOR DE GRÁFICO DE VELAS (local por sección, liviano)
+   - sin grilla, sin shadowBlur por frame (glow barato = doble trazo)
+   - rAF SOLO mientras la sección está en pantalla (IntersectionObserver)
+   - el scroll de la página es 100% nativo → manteca
+   ════════════════════════════════════════════════════════════ */
+function Chart(canvas, opts){
+  const x=canvas.getContext('2d');
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const cap=location.search.indexOf('cap')>-1;
+  let W=0,H=0,DPR=1,raf=0,closes=[],live=0,running=false,t0=performance.now();
+  const STEP=opts.step||16;
+  const lerp=(a,b,t)=>a+(b-a)*t, clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+  const hash=i=>{const r=Math.sin(i*127.1+0.7)*43758.5453;return r-Math.floor(r);};
+
+  function build(){
+    closes=[]; const n=Math.max(8,Math.floor(W/STEP)+1); let pull=0;
+    for(let i=0;i<n;i++){
+      const t=i/(n-1);
+      const trend = opts.trend>=0 ? (-0.74 + t*1.6) : (0.74 - t*1.55);   // alcista o caída
+      pull = pull*0.86 + (hash(i*1.7)-0.5)*0.5;
+      const wob = Math.sin(i*0.55)*0.05;
+      closes.push(clamp(trend + pull*(opts.vol||0.16) + wob, -1.02, 1.06));
+    }
+  }
+  function resize(){
+    DPR=Math.min(devicePixelRatio||1,1.75);
+    W=canvas.clientWidth; H=canvas.clientHeight;
+    if(W===0||H===0) return;
+    canvas.width=Math.round(W*DPR); canvas.height=Math.round(H*DPR);
+    x.setTransform(DPR,0,0,DPR,0,0);
+    build();
+  }
+  function draw(){
+    if(W===0||H===0) return;
+    x.clearRect(0,0,W,H);
+    const mob=innerWidth<760;
+    const amp=H*(mob?(opts.ampM??opts.amp??0.30):(opts.amp??0.32));
+    const midY=H*(mob?(opts.midM??opts.mid??0.55):(opts.mid??0.52));
+    const Y=v=>midY - v*amp;
+    const n=closes.length;
+    const cU=opts.up||'39,211,232', cD=opts.down||'232,116,106', cL=opts.line||cU;
+    const pts=[]; for(let i=0;i<n;i++) pts.push([(i/(n-1))*W, Y(i===n-1?closes[i]+live:closes[i])]);
+
+    /* área (gradiente sutil) */
+    const grd=x.createLinearGradient(0,Math.min(...pts.map(p=>p[1])),0,H);
+    grd.addColorStop(0,`rgba(${cL},0.12)`); grd.addColorStop(1,`rgba(${cL},0)`);
+    x.beginPath();x.moveTo(pts[0][0],pts[0][1]);for(let i=1;i<n;i++)x.lineTo(pts[i][0],pts[i][1]);
+    x.lineTo(W,H);x.lineTo(0,H);x.closePath();x.fillStyle=grd;x.fill();
+
+    /* velas — fantasma de un lado, brillantes del otro */
+    const bw=Math.max(4,STEP*0.5);let lx=0,ly=0;
+    for(let i=1;i<n;i++){
+      const u=i/(n-1),cx=u*W,o=closes[i-1],c=(i===n-1?closes[i]+live:closes[i]),up=c>=o;
+      const ramp=opts.bright==='left'?lerp(0.9,0.08,u):lerp(0.06,0.9,u);
+      const yO=Y(o),yC=Y(c),top=Math.min(yO,yC),bh=Math.max(2,Math.abs(yC-yO)),wick=4+hash(i)*7;
+      x.strokeStyle=up?`rgba(${cU},${ramp})`:`rgba(${cD},${ramp})`;
+      x.fillStyle=up?`rgba(${cU},${ramp})`:`rgba(${cD},${ramp*0.85})`;
+      x.lineWidth=1.2;
+      x.beginPath();x.moveTo(cx,top-wick);x.lineTo(cx,top+bh+wick);x.stroke();
+      if(up)x.fillRect(cx-bw/2,top,bw,bh); else x.strokeRect(cx-bw/2,top,bw,bh);
+      lx=cx;ly=yC;
+    }
+    /* línea de cierres con glow BARATO (doble trazo, sin shadowBlur) */
+    function path(){x.beginPath();x.moveTo(pts[0][0],pts[0][1]);for(let i=1;i<n;i++)x.lineTo(pts[i][0],pts[i][1]);}
+    path();x.lineWidth=7;x.strokeStyle=`rgba(${cL},0.07)`;x.lineJoin='round';x.lineCap='round';x.stroke();
+    const lg=x.createLinearGradient(0,0,W,0);
+    lg.addColorStop(0,`rgba(${cL},0.10)`);lg.addColorStop(0.55,`rgba(${cL},0.55)`);lg.addColorStop(1,`rgba(${cL},0.95)`);
+    path();x.lineWidth=2.2;x.strokeStyle=lg;x.stroke();
+    /* punto líder (glow con radial-gradient, barato) + etiqueta de precio (desktop) */
+    if(lx){
+      const rg=x.createRadialGradient(lx,ly,0,lx,ly,15);rg.addColorStop(0,`rgba(130,234,246,0.85)`);rg.addColorStop(1,`rgba(${cL},0)`);
+      x.fillStyle=rg;x.beginPath();x.arc(lx,ly,15,0,7);x.fill();
+      x.fillStyle='rgba(190,247,253,1)';x.beginPath();x.arc(lx,ly,3.4,0,7);x.fill();
+      if(opts.label&&!mob){
+        const price=(opts.base||18000)+(closes[n-1]+live)*2400;
+        const label='▲ '+price.toLocaleString('en-US',{minimumFractionDigits:1,maximumFractionDigits:1});
+        x.font='600 13px "JetBrains Mono",monospace';const tw=x.measureText(label).width+22;
+        let bx=lx+14;if(bx+tw>W-8)bx=lx-tw-14;bx=Math.max(8,bx);const by=ly-13;
+        x.fillStyle='rgba(8,16,22,0.92)';x.strokeStyle=`rgba(${cL},0.55)`;x.lineWidth=1;
+        x.beginPath();x.rect(bx,by,tw,26);x.fill();x.stroke();
+        x.fillStyle='rgba(130,234,246,1)';x.textBaseline='middle';x.textAlign='left';x.fillText(label,bx+11,by+14);
+      }
+    }
+  }
+  function loop(now){
+    if(!reduce&&opts.live) live=0.045*Math.sin((now-t0)/1000*1.1)+0.02*Math.sin((now-t0)/1000*2.7);
+    draw();
+    raf=requestAnimationFrame(loop);
+  }
+  function start(){if(running||reduce)return;running=true;raf=requestAnimationFrame(loop);}
+  function stop(){running=false;cancelAnimationFrame(raf);}
+  addEventListener('resize',()=>{resize();draw();},{passive:true});
+  resize();draw();
+  new IntersectionObserver(es=>es.forEach(e=>{
+    if(e.isIntersecting){ opts.live&&!cap ? start() : draw(); } else stop();
+  }),{threshold:0,rootMargin:'120px'}).observe(canvas);
+}
+
+/* instanciar: hero vivo en desktop (respira + precio tick); ESTÁTICO en mobile (dive butter). herida siempre estático = es fondo */
+const isMob=matchMedia('(max-width:760px)').matches;
+Chart(document.getElementById('heroCanvas'), {trend:1, live:!isMob, label:true, bright:'right', amp:0.30, ampM:0.16, mid:0.55, midM:0.82, base:18000});
+Chart(document.getElementById('heridaCanvas'), {trend:1, live:false, label:false, bright:'right', amp:0.30, ampM:0.16, mid:0.55, midM:0.82, base:18000});
+
+/* ═══ DIVE: transición wow hero→sección2 — scroll-based, SOLO CSS transforms (butter, 1:1, sin inercia) ═══ */
+(function(){
+  const dive=document.getElementById('dive'); if(!dive) return;
+  const hero=document.getElementById('hero'), herida=document.getElementById('herida');
+  const hCanvas=document.getElementById('heroCanvas'), hContent=document.querySelector('#hero .hero-content');
+  const sCanvas=document.getElementById('heridaCanvas'), sContent=document.querySelector('#herida .herida-inner');
+  const frame=document.getElementById('heridaFrame');
+  const ffGlow=frame&&frame.querySelector('.ff-glow'), ffTrail=frame&&frame.querySelector('.ff-trail'), ffHead=frame&&frame.querySelector('.ff-head');
+  const heroExtra=['#ticker','#hero .date-chip','#hero .scroll-hint','#hero .hero-glow'].map(s=>document.querySelector(s)).filter(Boolean);
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)), ease=t=>1-Math.pow(1-t,3);
+  let dTop=0, range=1;
+  function measure(){dTop=dive.offsetTop; range=Math.max(1, dive.offsetHeight-innerHeight); sizeFrame();}
+  function sizeFrame(){
+    if(!frame) return; const w=frame.clientWidth, h=frame.clientHeight; if(!w||!h) return;
+    const inset = w<760?10:20, rx = w<760?16:24;
+    frame.querySelectorAll('rect').forEach(r=>{
+      r.setAttribute('x',inset); r.setAttribute('y',inset);
+      r.setAttribute('width',Math.max(0,w-inset*2)); r.setAttribute('height',Math.max(0,h-inset*2));
+      r.setAttribute('rx',rx); r.setAttribute('ry',rx);
+    });
+  }
+  function applyP(p){
+    /* GRÁFICO de fondo: zoom continuo que NUNCA vuelve atrás. Los DOS canvas usan el
+       mismo zoom + misma serie → el gráfico es uno solo que crece y se queda grande
+       mientras el texto cambia encima (continuidad perfecta). */
+    const zoom = 1 + 1.5*ease(clamp(p/0.55,0,1)) + 0.25*clamp((p-0.55)/0.45,0,1);
+    hCanvas.style.transform=`scale(${zoom})`;
+    sCanvas.style.transform=`scale(${zoom})`;
+    /* HERO: el texto se desvanece mientras la cámara entra */
+    const cFade=1-clamp((p-0.10)/0.26,0,1);
+    hContent.style.opacity=cFade;
+    hContent.style.transform=`translateY(${-46*clamp((p-0.10)/0.42,0,1)}px)`;
+    heroExtra.forEach(el=>el.style.opacity=cFade);
+    hero.style.opacity=1-clamp((p-0.44)/0.16,0,1);
+    hero.style.pointerEvents=p>0.3?'none':'';
+    /* SECCIÓN 2: el texto emerge (el gráfico de fondo es el MISMO, sigue zoomeado) */
+    const s=clamp((p-0.42)/0.42,0,1);
+    herida.style.opacity=s;
+    sContent.style.transform=`scale(${0.94+0.06*ease(s)})`;
+    herida.style.pointerEvents=s>0.5?'':'none';
+    /* MARCO "lava": el contorno se dibuja solo a medida que llegás (mismo scroll, sin rAF) */
+    if(frame){
+      const fd=ease(clamp((s-0.04)/0.92,0,1)), off=1000*(1-fd);
+      ffGlow.style.strokeDashoffset=off;
+      ffTrail.style.strokeDashoffset=off;
+      ffHead.style.strokeDashoffset=42-1000*fd;           /* la punta brillante va al frente del trazo */
+      ffHead.style.opacity=(fd>0.015&&fd<0.992)?1:0;
+      frame.classList.toggle('live', s>0.985);            /* ya parado: plasma gira + respira */
+      herida.classList.toggle('arrived', s>0.985);        /* ya parado: el gráfico se desenfoca = otro lugar */
+    }
+  }
+  function onScroll(){ applyP(clamp((scrollY-dTop)/range,0,1)); }
+  if(reduce){dive.classList.add('reduced'); sizeFrame(); if(ffGlow){ffGlow.style.strokeDashoffset=0; ffTrail.style.strokeDashoffset=0;} return;}
+  measure(); onScroll();
+  addEventListener('scroll',onScroll,{passive:true});
+  addEventListener('resize',()=>{measure();onScroll();},{passive:true});
+
+  /* scroll-snap LEVE (no agresivo): al PARAR de scrollear dentro de la transición,
+     la completa suave hacia el estado más cercano (hero o sección 2). Nunca pelea mientras scrolleás. */
+  let snapT=0, snapping=false;
+  function maybeSnap(){
+    if(snapping || matchMedia('(max-width:760px)').matches) return;  /* en touch el snap pelea con el envión del dedo */
+    const p=clamp((scrollY-dTop)/range,0,1);
+    if(p>0.06 && p<0.94){
+      snapping=true;
+      window.scrollTo({top: dTop + (p<0.5?0:1)*range, behavior:'smooth'});
+      setTimeout(()=>{snapping=false;}, 720);
+    }
+  }
+  addEventListener('scroll',()=>{clearTimeout(snapT); snapT=setTimeout(maybeSnap,150);},{passive:true});
+})();
+
+/* ═══ HEADER solid + FLOATING CTA ═══ */
+const hdr=document.getElementById('hdr'),fcta=document.getElementById('float-cta'),heroEl=document.getElementById('hero'),regEl=document.getElementById('registro');
+addEventListener('scroll',()=>hdr.classList.toggle('solid',scrollY>40),{passive:true});
+const fctaObs=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.target===heroEl)fcta.dataset.hero=e.isIntersecting?'1':'0';if(e.target===regEl)fcta.dataset.reg=e.isIntersecting?'1':'0';});
+  fcta.classList.toggle('show',fcta.dataset.hero==='0'&&fcta.dataset.reg!=='1');
+},{threshold:.15});
+fctaObs.observe(heroEl);fctaObs.observe(regEl);
+
+/* ═══ REVEAL ═══ */
+const rvObs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');rvObs.unobserve(e.target)}})},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.rv').forEach(el=>rvObs.observe(el));
+
+/* ═══ COUNT-UP ═══ */
+function countUp(el){const target=+el.dataset.count,suf=el.dataset.suffix||'',pre=el.dataset.prefix||'';
+  if(location.search.indexOf('cap')>-1){el.textContent=pre+(target>=1000?target.toLocaleString('es'):target)+suf;return;}
+  const dur=1700,t0=performance.now();
+  const tick=now=>{const p=Math.min((now-t0)/dur,1),e=1-Math.pow(1-p,3),v=Math.round(e*target);el.textContent=pre+(v>=1000?v.toLocaleString('es'):v)+suf;if(p<1)requestAnimationFrame(tick);};requestAnimationFrame(tick);}
+const cObs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){countUp(e.target);cObs.unobserve(e.target)}})},{threshold:.6});
+document.querySelectorAll('[data-count]').forEach(el=>cObs.observe(el));
+
+/* ═══ TICKER ═══ */
+const ticks=[['EUR/USD','1.0892','up','+0.34%'],['NAS100','18.244','up','+1.12%'],['BTC/USD','67.430','up','+2.8%'],['ORO','2.388','down','-0.21%'],['S&P 500','5.204','up','+0.46%'],['ETH/USD','3.512','up','+1.9%'],['PETRÓLEO','81.20','down','-0.6%'],['USD/JPY','151.4','up','+0.18%'],['TSLA','248.5','up','+3.1%']];
+const trk=document.getElementById('tickTrack');
+const row=()=>ticks.map(([s,p,d,c])=>`<span><b>${s}</b> ${p} <i class="${d}">${d==='up'?'▲':'▼'} ${c}</i></span>`).join('');
+trk.innerHTML=row()+row();
+
+/* ═══ FAQ ═══ */
+function faqT(btn){const i=btn.closest('.faq-i'),open=i.classList.contains('open');document.querySelectorAll('.faq-i.open').forEach(el=>el.classList.remove('open'));if(!open)i.classList.add('open');}
+
+/* ═══ COUNTDOWN + fecha dinámica (próximo viernes 19:30 UY) — PLACEHOLDER ═══ */
+function nextFriday1930(){const now=new Date(),d=new Date(now);d.setHours(19,30,0,0);const day=d.getDay();let add=(5-day+7)%7;if(add===0&&now>d)add=7;d.setDate(d.getDate()+add);return d;}
+const NEXT=nextFriday1930(),meses=['ene','feb','mar','abr','may','jun','jul','ago','set','oct','nov','dic'];
+document.getElementById('cdWhenDate').textContent=`Viernes ${NEXT.getDate()} de ${meses[NEXT.getMonth()]} · 19:30 (UY)`;
+document.getElementById('chipDate').innerHTML=`<em>Vie ${NEXT.getDate()} ${meses[NEXT.getMonth()]}</em> · 19:30 (UY)`;
+const z=n=>String(n).padStart(2,'0');
+function cdTick(){const diff=NEXT-new Date();if(diff<=0){document.getElementById('countdown').innerHTML='<span style="color:var(--cyan);font-family:JetBrains Mono">● EN VIVO AHORA</span>';return;}
+  document.getElementById('cd-d').textContent=z(Math.floor(diff/864e5));document.getElementById('cd-h').textContent=z(Math.floor(diff/36e5)%24);document.getElementById('cd-m').textContent=z(Math.floor(diff/6e4)%60);document.getElementById('cd-s').textContent=z(Math.floor(diff/1e3)%60);}
+cdTick();setInterval(cdTick,1000);
+
+/* ═══ HERO GLOW sigue al mouse (sutil) ═══ */
+const glow=document.getElementById('heroGlow');
+heroEl.addEventListener('pointermove',e=>{const r=heroEl.getBoundingClientRect();glow.style.transform=`translate(${(e.clientX-r.left-280)*.06}px,${(e.clientY-r.top-280)*.06}px)`;},{passive:true});
+
+/* ═══ MODO CAPTURA (?cap) — QA/screenshots ═══ */
+if(location.search.indexOf('cap')>-1){
+  document.documentElement.style.scrollBehavior='auto';
+  document.querySelectorAll('.rv').forEach(e=>e.classList.add('in'));
+  document.querySelectorAll('[data-count]').forEach(el=>{const t=+el.dataset.count;el.textContent=(el.dataset.prefix||'')+(t>=1000?t.toLocaleString('es'):t)+(el.dataset.suffix||'');});
+}
+
+/* ═══ FORM (mock — conectar a n8n/WhatsApp en backend) ═══ */
+document.getElementById('regForm').addEventListener('submit',ev=>{ev.preventDefault();
+  const name=document.getElementById('f-name').value.trim(),email=document.getElementById('f-email').value.trim();
+  if(!name){document.getElementById('f-name').focus();return;}
+  if(!/^[^@]+@[^@]+\.[^@]+$/.test(email)){document.getElementById('f-email').focus();return;}
+  document.getElementById('regForm').style.display='none';
+  document.getElementById('regSuccess').classList.add('show');
+});
+</script>
+</body>
+</html>
