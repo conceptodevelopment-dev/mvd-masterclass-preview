@@ -141,7 +141,7 @@ section.blk{padding:120px 0;position:relative}
 /* ── MARCO "LAVA": contorno que se dibuja al llegar (scroll-driven) + plasma que gira (CSS, gated en .live) ── */
 .herida-frame{position:absolute;inset:0;width:100%;height:100%;z-index:4;pointer-events:none;overflow:visible;transform-origin:50% 50%}
 .herida-frame rect{fill:none;stroke-linecap:round;stroke-linejoin:round}
-.herida-frame .ff-glow{stroke:url(#frameGrad);stroke-width:15;opacity:.42;stroke-dasharray:1000;stroke-dashoffset:1000;filter:blur(6px)}  /* halo Siri: grueso, difuminado, color agua que fluye */
+.herida-frame .ff-glow{stroke:var(--cyan);stroke-width:8;opacity:.16;stroke-dasharray:1000;stroke-dashoffset:1000}
 .herida-frame .ff-trail{stroke:url(#frameGrad);stroke-width:3.4;stroke-dasharray:1000;stroke-dashoffset:1000}
 .herida-frame .ff-c2{stroke:#6ad9ff;stroke-width:2.6;stroke-dasharray:90 910;stroke-dashoffset:0;opacity:0;filter:drop-shadow(0 0 12px rgba(106,217,255,.85))}
 .herida-frame .ff-c1{stroke:#eafdff;stroke-width:3.2;stroke-dasharray:130 870;stroke-dashoffset:0;opacity:0;filter:drop-shadow(0 0 12px rgba(180,245,255,.95))}
@@ -328,7 +328,8 @@ footer .flinks a:hover{color:var(--ink)}
   .hero-top,.hero-bot{display:block}
   .hero-bot{margin-top:auto}                                  /* CTA abajo del todo */
   .hero-content{text-align:center}
-  #heroCanvas,#heridaCanvas{transform-origin:82% 48%}        /* el zoom bucea hacia el PRECIO (derecha), no al medio */
+  #heroCanvas,#heridaCanvas{transform-origin:90% 47%}        /* el zoom bucea en el punto/precio (derecha) */
+  #heridaCanvas{transition:none}                             /* el blur lo maneja el dive por scroll (sin lag) */
   .hero-grad{background:linear-gradient(to bottom,
     rgba(5,8,12,.97) 0%,rgba(5,8,12,.95) 38%,rgba(5,8,12,.55) 46%,rgba(5,8,12,.08) 57%,
     rgba(5,8,12,.08) 80%,rgba(5,8,12,.74) 89%,rgba(5,8,12,.97) 98%)}
@@ -441,10 +442,7 @@ footer .flinks a:hover{color:var(--ink)}
   <div class="herida-aura"></div>
   <svg class="herida-frame" id="heridaFrame" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <defs><linearGradient id="frameGrad" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#1aa6c9"/><stop offset=".25" stop-color="#34e0c4"/>
-      <stop offset=".5" stop-color="#a6f4ff"/><stop offset=".72" stop-color="#3bb6ff"/>
-      <stop offset="1" stop-color="#27d3e8"/>
-      <animateTransform attributeName="gradientTransform" type="rotate" from="0 .5 .5" to="360 .5 .5" dur="9s" repeatCount="indefinite"/>
+      <stop offset="0" stop-color="#11aec4"/><stop offset=".5" stop-color="#27d3e8"/><stop offset="1" stop-color="#82eaf6"/>
     </linearGradient></defs>
     <rect class="ff-glow"  pathLength="1000"/>
     <rect class="ff-trail" pathLength="1000"/>
@@ -691,6 +689,7 @@ Chart(document.getElementById('heridaCanvas'), {trend:1, live:false, label:false
   const ffGlow=frame&&frame.querySelector('.ff-glow'), ffTrail=frame&&frame.querySelector('.ff-trail'), ffHead=frame&&frame.querySelector('.ff-head');
   const heroExtra=['#ticker','#hero .date-chip','#hero .scroll-hint','#hero .hero-glow'].map(s=>document.querySelector(s)).filter(Boolean);
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const mob=matchMedia('(max-width:760px)').matches;
   const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)), ease=t=>1-Math.pow(1-t,3);
   let dTop=0, range=1;
   function measure(){dTop=dive.offsetTop; range=Math.max(1, dive.offsetHeight-innerHeight); sizeFrame();}
@@ -709,8 +708,20 @@ Chart(document.getElementById('heridaCanvas'), {trend:1, live:false, label:false
        mismo zoom + misma serie → el gráfico es uno solo que crece y se queda grande
        mientras el texto cambia encima (continuidad perfecta). */
     const zoom = 1 + 1.5*ease(clamp(p/0.55,0,1)) + 0.25*clamp((p-0.55)/0.45,0,1);
-    hCanvas.style.transform=`scale(${zoom})`;
-    sCanvas.style.transform=`scale(${zoom})`;
+    if(mob){
+      /* MOBILE: el zoom bucea en el punto/precio (derecha) y lo lleva al CENTRO; ese punto+número
+         es lo último nítido y después TODO se va a blur (entrada a la sección 2). */
+      const tdp=ease(clamp(p/0.6,0,1));
+      const tx=-0.40*innerWidth*tdp;
+      const blur=7*clamp((p-0.6)/0.3,0,1);
+      const tf=`translate(${tx}px,0) scale(${zoom})`;
+      hCanvas.style.transform=tf; sCanvas.style.transform=tf;
+      const fl=blur>0.05?`blur(${blur.toFixed(2)}px)`:'';
+      hCanvas.style.filter=fl; sCanvas.style.filter=fl;
+    } else {
+      hCanvas.style.transform=`scale(${zoom})`;
+      sCanvas.style.transform=`scale(${zoom})`;
+    }
     /* HERO: el texto se desvanece mientras la cámara entra */
     const cFade=1-clamp((p-0.10)/0.26,0,1);
     hContent.style.opacity=cFade;
