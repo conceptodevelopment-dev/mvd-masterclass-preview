@@ -141,7 +141,7 @@ section.blk{padding:120px 0;position:relative}
 /* ── MARCO "LAVA": contorno que se dibuja al llegar (scroll-driven) + plasma que gira (CSS, gated en .live) ── */
 .herida-frame{position:absolute;inset:0;width:100%;height:100%;z-index:4;pointer-events:none;overflow:visible;transform-origin:50% 50%}
 .herida-frame rect{fill:none;stroke-linecap:round;stroke-linejoin:round}
-.herida-frame .ff-glow{stroke:var(--cyan);stroke-width:11;opacity:.18;stroke-dasharray:1000;stroke-dashoffset:1000}
+.herida-frame .ff-glow{stroke:url(#frameGrad);stroke-width:15;opacity:.42;stroke-dasharray:1000;stroke-dashoffset:1000;filter:blur(6px)}  /* halo Siri: grueso, difuminado, color agua que fluye */
 .herida-frame .ff-trail{stroke:url(#frameGrad);stroke-width:3.4;stroke-dasharray:1000;stroke-dashoffset:1000}
 .herida-frame .ff-c2{stroke:#6ad9ff;stroke-width:2.6;stroke-dasharray:90 910;stroke-dashoffset:0;opacity:0;filter:drop-shadow(0 0 12px rgba(106,217,255,.85))}
 .herida-frame .ff-c1{stroke:#eafdff;stroke-width:3.2;stroke-dasharray:130 870;stroke-dashoffset:0;opacity:0;filter:drop-shadow(0 0 12px rgba(180,245,255,.95))}
@@ -328,12 +328,12 @@ footer .flinks a:hover{color:var(--ink)}
   .hero-top,.hero-bot{display:block}
   .hero-bot{margin-top:auto}                                  /* CTA abajo del todo */
   .hero-content{text-align:center}
-  #heroCanvas,#heridaCanvas{transform-origin:72% 52%}        /* el zoom bucea hacia el pico/precio */
+  #heroCanvas,#heridaCanvas{transform-origin:82% 48%}        /* el zoom bucea hacia el PRECIO (derecha), no al medio */
   .hero-grad{background:linear-gradient(to bottom,
-    rgba(5,8,12,.95) 0%,rgba(5,8,12,.9) 32%,rgba(5,8,12,.42) 42%,rgba(5,8,12,.06) 50%,
-    rgba(5,8,12,.08) 80%,rgba(5,8,12,.72) 89%,rgba(5,8,12,.96) 98%)}
+    rgba(5,8,12,.97) 0%,rgba(5,8,12,.95) 38%,rgba(5,8,12,.55) 46%,rgba(5,8,12,.08) 57%,
+    rgba(5,8,12,.08) 80%,rgba(5,8,12,.74) 89%,rgba(5,8,12,.97) 98%)}
   .hero-eyebrow{display:none}                                 /* fuera: se pisaba con el ticker */
-  #hero h1{font-size:clamp(2.3rem,9.3vw,3.15rem);line-height:1.05;max-width:none;margin:0}
+  #hero h1{font-size:clamp(2.35rem,9.4vw,3.2rem);line-height:1.05;max-width:none;margin:0;font-weight:440;text-shadow:0 2px 26px rgba(5,8,12,.92),0 1px 3px rgba(5,8,12,.95)}
   .hero-sub{display:none}
   .hero-sub-mob{display:block;font-size:1.02rem;line-height:1.5;color:rgba(233,242,246,.82);margin:24px auto 0;max-width:26ch}
   .hero-sub-mob b{color:var(--ink);font-weight:600}
@@ -441,9 +441,10 @@ footer .flinks a:hover{color:var(--ink)}
   <div class="herida-aura"></div>
   <svg class="herida-frame" id="heridaFrame" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <defs><linearGradient id="frameGrad" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#0b9fd6"/><stop offset=".28" stop-color="#27d3e8"/>
-      <stop offset=".5" stop-color="#cffaff"/><stop offset=".72" stop-color="#27d3e8"/>
-      <stop offset="1" stop-color="#6ad9ff"/>
+      <stop offset="0" stop-color="#1aa6c9"/><stop offset=".25" stop-color="#34e0c4"/>
+      <stop offset=".5" stop-color="#a6f4ff"/><stop offset=".72" stop-color="#3bb6ff"/>
+      <stop offset="1" stop-color="#27d3e8"/>
+      <animateTransform attributeName="gradientTransform" type="rotate" from="0 .5 .5" to="360 .5 .5" dur="9s" repeatCount="indefinite"/>
     </linearGradient></defs>
     <rect class="ff-glow"  pathLength="1000"/>
     <rect class="ff-trail" pathLength="1000"/>
@@ -695,10 +696,11 @@ Chart(document.getElementById('heridaCanvas'), {trend:1, live:false, label:false
   function measure(){dTop=dive.offsetTop; range=Math.max(1, dive.offsetHeight-innerHeight); sizeFrame();}
   function sizeFrame(){
     if(!frame) return; const w=frame.clientWidth, h=frame.clientHeight; if(!w||!h) return;
-    const inset = w<760?10:20, rx = w<760?16:24;
+    const mob=w<760;
+    const sx=mob?12:20, top=mob?88:20, bot=mob?26:20, rx=mob?18:24;   // mobile: techo bajo el header, piso cerca del fondo
     frame.querySelectorAll('rect').forEach(r=>{
-      r.setAttribute('x',inset); r.setAttribute('y',inset);
-      r.setAttribute('width',Math.max(0,w-inset*2)); r.setAttribute('height',Math.max(0,h-inset*2));
+      r.setAttribute('x',sx); r.setAttribute('y',top);
+      r.setAttribute('width',Math.max(0,w-sx*2)); r.setAttribute('height',Math.max(0,h-top-bot));
       r.setAttribute('rx',rx); r.setAttribute('ry',rx);
     });
   }
@@ -775,11 +777,19 @@ function countUp(el){const target=+el.dataset.count,suf=el.dataset.suffix||'',pr
 const cObs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){countUp(e.target);cObs.unobserve(e.target)}})},{threshold:.6});
 document.querySelectorAll('[data-count]').forEach(el=>cObs.observe(el));
 
-/* ═══ TICKER ═══ */
-const ticks=[['EUR/USD','1.0892','up','+0.34%'],['NAS100','18.244','up','+1.12%'],['BTC/USD','67.430','up','+2.8%'],['ORO','2.388','down','-0.21%'],['S&P 500','5.204','up','+0.46%'],['ETH/USD','3.512','up','+1.9%'],['PETRÓLEO','81.20','down','-0.6%'],['USD/JPY','151.4','up','+0.18%'],['TSLA','248.5','up','+3.1%']];
+/* ═══ TICKER (números en vivo — se actualizan solos) ═══ */
+const tkData=[['EUR/USD',1.0892,4],['NAS100',18244,0],['BTC/USD',67430,0],['ORO',2388.4,1],['S&P 500',5204,0],['ETH/USD',3512,0],['PETRÓLEO',81.2,2],['USD/JPY',151.4,1],['TSLA',248.5,1]];
 const trk=document.getElementById('tickTrack');
-const row=()=>ticks.map(([s,p,d,c])=>`<span><b>${s}</b> ${p} <i class="${d}">${d==='up'?'▲':'▼'} ${c}</i></span>`).join('');
-trk.innerHTML=row()+row();
+const tkFmt=(v,d)=>v.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+const tkState=tkData.map(([s,p,d])=>({s,p,d,base:p,pct:Math.random()*3-1}));
+const tkCell=t=>{const up=t.pct>=0;return `<span><b>${t.s}</b> <span class="tp">${tkFmt(t.p,t.d)}</span> <i class="${up?'up':'down'}">${up?'▲':'▼'} ${up?'+':''}${t.pct.toFixed(2)}%</i></span>`;};
+trk.innerHTML=tkState.map(tkCell).join('')+tkState.map(tkCell).join('');
+function tkTick(){
+  tkState.forEach(t=>{ t.p=Math.max(t.base*0.92,t.p+(Math.random()-0.5)*t.base*0.0009); t.pct=Math.max(-3.4,Math.min(3.9,t.pct+(Math.random()-0.5)*0.08)); });
+  const ps=trk.querySelectorAll('.tp'), is=trk.querySelectorAll('i'), dbl=tkState.concat(tkState);
+  dbl.forEach((t,i)=>{ if(ps[i])ps[i].textContent=tkFmt(t.p,t.d); if(is[i]){const up=t.pct>=0;is[i].className=up?'up':'down';is[i].textContent=`${up?'▲':'▼'} ${up?'+':''}${t.pct.toFixed(2)}%`;} });
+}
+setInterval(tkTick,1300);
 
 /* ═══ FAQ ═══ */
 function faqT(btn){const i=btn.closest('.faq-i'),open=i.classList.contains('open');document.querySelectorAll('.faq-i.open').forEach(el=>el.classList.remove('open'));if(!open)i.classList.add('open');}
