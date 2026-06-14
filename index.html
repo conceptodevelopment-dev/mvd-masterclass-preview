@@ -85,6 +85,7 @@ img,canvas{display:block;max-width:100%}
 @keyframes ticker{to{transform:translateX(-50%)}}
 
 .hero-content{position:relative;z-index:4;width:100%}
+.hero-top,.hero-bot{display:contents}  /* desktop: neutro. mobile: bloques arriba/abajo (gráfica en el medio) */
 .hero-eyebrow{margin-bottom:24px}
 #hero h1{font-weight:340;font-size:clamp(3rem,6.6vw,5.8rem);line-height:.95;letter-spacing:-.025em;max-width:15ch;margin-bottom:24px}
 #hero h1 em{font-style:italic;color:var(--cyan);font-weight:380}
@@ -158,10 +159,7 @@ section.blk{padding:120px 0;position:relative}
 #herida.arrived .herida-aura{opacity:1}
 #herida.arrived #heridaCanvas{filter:blur(8px) brightness(.82) saturate(1.15)}
 .herida-frame.drawn .ff-glow,.herida-frame.drawn .ff-trail{stroke-dashoffset:0}  /* draw-on por clase (mobile: lo dispara IntersectionObserver) */
-@media(max-width:760px){
-  .herida-frame .ff-c2{display:none}     /* mobile: un cometa + latido (liviano) */
-  .herida-frame .ff-glow,.herida-frame .ff-trail{transition:stroke-dashoffset 1.4s cubic-bezier(.4,0,.2,1)}
-}
+@media(max-width:760px){.herida-frame .ff-c2{display:none}}  /* mobile: un cometa + latido (liviano) */
 @media(prefers-reduced-motion:reduce){.herida-frame .ff-c1,.herida-frame .ff-c2{display:none}.herida-frame.live{animation:none}#herida.arrived #heridaCanvas{filter:none}}
 
 /* ── 3. ESTEBAN ── */
@@ -318,50 +316,62 @@ footer .flinks a:hover{color:var(--ink)}
   .countdown{gap:9px}.cd-box{width:64px}
 }
 
-/* ════════════════ MOBILE — repensado de cero (≤760px) ════════════════
-   El JS desactiva el sticky-zoom → secciones apiladas con scroll nativo (nada se corta).
-   Gráfica VISIBLE de fondo (climbing), POCO texto, mucho aire, CTAs full-width. */
+/* ════════════════ MOBILE — adaptado del desktop, NO recortado (≤760px) ════════════════
+   Mismo dive/zoom que desktop. Texto CENTRADO arriba y abajo, gráfica VISIBLE en el
+   medio (no se pisan), número en vivo, ticker moviéndose, poco texto, mucho aire. */
 @media(max-width:760px){
   body{-webkit-tap-highlight-color:transparent}
-  .inner{padding:0 24px}
+  .inner{padding:0 22px}
 
-  /* ── HERO: gráfica climbing visible arriba, poco texto abajo ── */
-  #hero{align-items:flex-end;padding-bottom:13vh}
-  .hero-grad{background:
-    linear-gradient(to top,rgba(5,8,12,.95) 0%,rgba(5,8,12,.78) 32%,rgba(5,8,12,.32) 54%,rgba(5,8,12,.03) 74%,transparent 100%)}
-  .hero-content{align-self:flex-end}
-  .hero-eyebrow{font-size:.55rem;letter-spacing:.13em;margin-bottom:22px}
-  #hero h1{font-size:clamp(2.4rem,10vw,3.3rem);line-height:1.02;max-width:14ch;margin-bottom:20px}
-  .hero-sub{display:none}                       /* el copy largo NO va en mobile */
-  .hero-sub-mob{display:block;font-size:1.04rem;line-height:1.5;color:rgba(233,242,246,.74);margin-bottom:30px;max-width:30ch}
+  /* ── HERO: texto arriba + abajo, gráfica en su banda del medio ── */
+  #hero{align-items:center}
+  #hero .inner{min-height:82svh;display:flex;flex-direction:column;justify-content:space-between}
+  .hero-top,.hero-bot{display:block}
+  .hero-content{text-align:center}
+  #heroCanvas,#heridaCanvas{transform-origin:70% 45%}        /* el zoom bucea hacia el pico/precio */
+  .hero-grad{background:linear-gradient(to bottom,
+    rgba(5,8,12,.93) 0%,rgba(5,8,12,.9) 20%,
+    rgba(5,8,12,.42) 31%,rgba(5,8,12,.06) 46%,rgba(5,8,12,.42) 63%,
+    rgba(5,8,12,.9) 78%,rgba(5,8,12,.97) 100%)}
+  .hero-eyebrow{justify-content:center;font-size:.55rem;letter-spacing:.13em;margin-bottom:18px}
+  #hero h1{font-size:clamp(2.3rem,9.5vw,3.2rem);line-height:1.04;max-width:none;margin-bottom:0}
+  .hero-sub{display:none}
+  .hero-sub-mob{display:block;font-size:1.02rem;line-height:1.5;color:rgba(233,242,246,.78);margin:0 auto 22px;max-width:30ch}
   .hero-sub-mob b{color:var(--ink);font-weight:600}
   .hero-actions{flex-direction:column;align-items:stretch;gap:0;margin-bottom:0}
   .hero-actions .cta{justify-content:center;width:100%;padding:19px 24px;font-size:1.04rem}
-  .cta-ghost,.hero-micro{display:none}          /* declutter: nada de chorizo */
+  .cta-ghost,.hero-micro{display:none}                       /* declutter */
   #ticker{top:54px}
+  .ticker-track{animation-duration:24s}                      /* que se note el movimiento */
 
-  /* ── SECCIÓN 2: aire, lista que respira, gráfico visible de fondo ── */
-  #herida{align-items:flex-end;padding:11vh 0 13vh}
+  /* ── SECCIÓN 2: centrada, compacta (entra en 1 pantalla), gráfico de fondo ── */
+  #herida{align-items:center}
+  .herida-inner{text-align:center}
   .herida-grad{background:
-    linear-gradient(to top,rgba(5,8,12,.94) 0%,rgba(5,8,12,.76) 34%,rgba(5,8,12,.36) 64%,rgba(5,8,12,.05) 90%,transparent 100%)}
-  #herida.arrived #heridaCanvas{filter:blur(4px) brightness(.92) saturate(1.1)}  /* en mobile el gráfico SÍ se ve */
-  .t2-wrap{max-width:none}
-  .label-row{margin-bottom:22px}
-  .t2-h{font-size:clamp(2.1rem,8.5vw,2.9rem);margin:10px 0 26px}
-  .t2-list{margin-bottom:32px}
-  .t2-list li{font-size:1.05rem;line-height:1.35;padding:17px 0;gap:16px}
-  #herida .cta{justify-content:center;width:100%;padding:18px 24px}
+    radial-gradient(125% 64% at 50% 50%,rgba(5,8,12,.9),rgba(5,8,12,.45) 68%,transparent 100%),
+    linear-gradient(to bottom,rgba(5,8,12,.66),rgba(5,8,12,.12) 28%,rgba(5,8,12,.12) 72%,rgba(5,8,12,.66))}
+  #herida.arrived #heridaCanvas{filter:blur(3px) brightness(.95) saturate(1.1)}  /* gráfico SÍ visible */
+  .t2-wrap{max-width:none;margin:0 auto}
+  #herida .label-row{justify-content:center;margin-bottom:16px}
+  #herida .label-row .lline{display:none}
+  .t2-h{font-size:clamp(2rem,8vw,2.7rem);margin:8px 0 22px}
+  .t2-list{margin:0 auto 26px;max-width:33ch}
+  .t2-list li{font-size:.98rem;line-height:1.3;padding:12px 0;gap:14px;text-align:left}
+  #herida .cta{justify-content:center;width:100%}
 
   /* ── INSTRUCTOR: foto primero ── */
   .instr-grid{display:flex;flex-direction:column;gap:30px}
   .instr-photo{order:-1;max-width:none;width:100%;aspect-ratio:16/11}
   .instr-quote{font-size:1.1rem}
 
-  /* ── REGISTRO ── */
-  .reg-left p{max-width:none}
+  /* ── REGISTRO: centrado ── */
+  .reg-left{text-align:center}
+  .reg-left p{max-width:none;margin:0 auto 30px}
+  #registro .label-row{justify-content:center}
+  #registro .label-row .lline{display:none}
+  .countdown{justify-content:center}
   .reg-card .cta{width:100%}
 
-  /* FLOAT CTA respeta el área segura del home indicator */
   #float-cta{bottom:max(16px,env(safe-area-inset-bottom))}
 }
 
@@ -395,20 +405,24 @@ footer .flinks a:hover{color:var(--ink)}
 
   <div class="hero-content">
     <div class="inner">
-      <div class="hero-eyebrow eyebrow">Masterclass gratuita · En vivo · Una vez al mes</div>
-      <h1>Aprendé a leer el mercado <em>en una noche.</em></h1>
-      <p class="hero-sub">2 horas en vivo con <b>Esteban Echevarría</b> — de chef a trader full-time. Vas a ver, en tiempo real, cómo opera alguien que vive de esto. <b>Sin humo, sin señales, sin venta de promesas.</b></p>
-      <p class="hero-sub-mob"><b>2 horas en vivo</b> con Esteban Echevarría. Trading real, sin humo ni señales.</p>
-      <div class="hero-actions">
-        <a href="#registro" class="cta lg">Reservar mi lugar gratis
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z"/></svg>
-        </a>
-        <a href="#instructor" class="cta-ghost">Ver qué vas a aprender ↓</a>
+      <div class="hero-top">
+        <div class="hero-eyebrow eyebrow">Masterclass gratuita · En vivo · Una vez al mes</div>
+        <h1>Aprendé a leer el mercado <em>en una noche.</em></h1>
       </div>
-      <div class="hero-micro">
-        <span><i class="dot"></i> Gratis · Sin tarjeta</span>
-        <span><i class="dot"></i> Cupos limitados</span>
-        <span><i class="dot"></i> +2.500 alumnos · Mejor Academia 2025</span>
+      <div class="hero-bot">
+        <p class="hero-sub">2 horas en vivo con <b>Esteban Echevarría</b> — de chef a trader full-time. Vas a ver, en tiempo real, cómo opera alguien que vive de esto. <b>Sin humo, sin señales, sin venta de promesas.</b></p>
+        <p class="hero-sub-mob"><b>2 horas en vivo</b> con Esteban Echevarría. Trading real, sin humo ni señales.</p>
+        <div class="hero-actions">
+          <a href="#registro" class="cta lg">Reservar mi lugar gratis
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z"/></svg>
+          </a>
+          <a href="#instructor" class="cta-ghost">Ver qué vas a aprender ↓</a>
+        </div>
+        <div class="hero-micro">
+          <span><i class="dot"></i> Gratis · Sin tarjeta</span>
+          <span><i class="dot"></i> Cupos limitados</span>
+          <span><i class="dot"></i> +2.500 alumnos · Mejor Academia 2025</span>
+        </div>
       </div>
     </div>
   </div>
@@ -638,7 +652,7 @@ function Chart(canvas, opts){
       const rg=x.createRadialGradient(lx,ly,0,lx,ly,15);rg.addColorStop(0,`rgba(130,234,246,0.85)`);rg.addColorStop(1,`rgba(${cL},0)`);
       x.fillStyle=rg;x.beginPath();x.arc(lx,ly,15,0,7);x.fill();
       x.fillStyle='rgba(190,247,253,1)';x.beginPath();x.arc(lx,ly,3.4,0,7);x.fill();
-      if(opts.label&&!mob){
+      if(opts.label){
         const price=(opts.base||18000)+(closes[n-1]+live)*2400;
         const label='▲ '+price.toLocaleString('en-US',{minimumFractionDigits:1,maximumFractionDigits:1});
         x.font='600 13px "JetBrains Mono",monospace';const tw=x.measureText(label).width+22;
@@ -664,9 +678,8 @@ function Chart(canvas, opts){
 }
 
 /* instanciar: hero vivo en desktop (respira + precio tick); ESTÁTICO en mobile (dive butter). herida siempre estático = es fondo */
-const isMob=matchMedia('(max-width:760px)').matches;
-Chart(document.getElementById('heroCanvas'), {trend:1, live:!isMob, label:true, bright:'right', amp:0.30, ampM:0.32, mid:0.55, midM:0.60, base:18000});
-Chart(document.getElementById('heridaCanvas'), {trend:1, live:false, label:false, bright:'right', amp:0.30, ampM:0.32, mid:0.55, midM:0.60, base:18000});
+Chart(document.getElementById('heroCanvas'), {trend:1, live:true, label:true, bright:'right', amp:0.30, ampM:0.22, mid:0.55, midM:0.62, base:18000});
+Chart(document.getElementById('heridaCanvas'), {trend:1, live:false, label:false, bright:'right', amp:0.30, ampM:0.22, mid:0.55, midM:0.62, base:18000});
 
 /* ═══ DIVE: transición wow hero→sección2 — scroll-based, SOLO CSS transforms (butter, 1:1, sin inercia) ═══ */
 (function(){
@@ -721,19 +734,8 @@ Chart(document.getElementById('heridaCanvas'), {trend:1, live:false, label:false
     }
   }
   function onScroll(){ applyP(clamp((scrollY-dTop)/range,0,1)); }
-  const isTouch=matchMedia('(max-width:760px)').matches;
-  if(reduce||isTouch){
-    /* mobile/reduced: hero y sección 2 = secciones normales apiladas (scroll nativo, nada se corta, gráfica visible) */
-    dive.classList.add('reduced');
-    sizeFrame(); addEventListener('resize',sizeFrame,{passive:true});
-    if(frame){
-      if(reduce){ frame.classList.add('drawn','live'); herida.classList.add('arrived'); }
-      else new IntersectionObserver(es=>es.forEach(e=>{   /* el marco se dibuja al entrar la sección en vista */
-        if(e.isIntersecting){ frame.classList.add('drawn','live'); herida.classList.add('arrived'); }
-      }),{threshold:0.3}).observe(herida);
-    }
-    return;
-  }
+  /* el dive (zoom manteca) corre en mobile TAMBIÉN — solo se desactiva con reduce-motion real */
+  if(reduce){ dive.classList.add('reduced'); sizeFrame(); if(frame){frame.classList.add('drawn','live'); herida.classList.add('arrived');} return; }
   measure(); onScroll();
   addEventListener('scroll',onScroll,{passive:true});
   addEventListener('resize',()=>{measure();onScroll();},{passive:true});
