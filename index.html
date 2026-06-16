@@ -118,6 +118,17 @@ img,canvas{display:block;max-width:100%}
 @keyframes drop{0%,100%{opacity:.3;transform:scaleY(.5)}55%{opacity:1;transform:scaleY(1)}}
 @media(max-width:640px){.scroll-hint{display:none}}
 
+/* ════════ HERO DESKTOP — pulido premium (≥761px, NO afecta mobile) ════════ */
+@media(min-width:761px){
+  /* tipografía display más cerrada (tracking/leading) + más aire entre bloques (ritmo editorial) */
+  #hero h1{letter-spacing:-.038em;line-height:.91;margin-bottom:30px}
+  .hero-eyebrow{margin-bottom:32px}
+  .hero-sub{max-width:44ch;line-height:1.72;color:rgba(233,242,246,.72);font-weight:300;margin-bottom:44px}
+  .hero-actions{margin-bottom:34px}
+  .hero-micro{gap:14px 28px;font-size:.8rem;color:var(--muted)}
+  .hero-micro .dot{width:5px;height:5px}
+}
+
 /* ════════ SECCIÓN GENÉRICA ════════ */
 section.blk{padding:120px 0;position:relative}
 @media(max-width:768px){section.blk{padding:84px 0}}
